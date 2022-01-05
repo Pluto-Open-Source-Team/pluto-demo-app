@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <title>Pluto - Setup</title>
+
+        <script src="{{ url_for('static', filename='js/pre-use-script.js') }}"></script>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/pre-use-style.css') }}">
+
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="pre-use-form-wrapper">
+
+            <!-- Tabs - START -->
+            <ul>
+                <li>
+                    <a class="pre-use-form-link active" href="javascript:" data-attr="language">
+                        <span>Language</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="pre-use-form-link" href="javascript:" data-attr="general-settings">
+                        <span>General Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="pre-use-form-link" href="javascript:" data-attr="google-settings">
+                        <span>Google Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="pre-use-form-link" href="javascript:" data-attr="terms-of-use">
+                        <span>Terms Of Use</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="pre-use-form-link" href="javascript:" data-attr="sign-in">
+                        <span>Sign In</span>
+                    </a>
+                </li>
+
+                <li class="form-tab-highlight" id="form-tab-highlight"></li>
+            </ul>
+            <!-- Tabs - END -->
+
+            <!-- Form Content - START -->
+            <div class="form-content-wrapper">
+
+                <!-- Language form section -->
+                <div class="form-content show" data-tab-content="language">
+                    <form action="#">
+                        <h6>Select Language</h6>
+                        <h5>Please select the language you would like to use while running Pluto</h5>
+                        <div class="form-row forms-margin-top">
+                            <div class="form-column">
+                                <input type="radio" id="english" name="fav_language" value="english" checked="checked">
+                                <label for="english">
+                                    <img class="flag-image" src="{{ url_for('static', filename='img/lang/united-kingdom.png') }}" alt="france-flag" width="80" height="53">
+                                </label>
+                            </div>
+                            <div class="form-column">
+                                <input type="radio" id="french" name="fav_language" value="french">
+                                <label for="french">
+                                    <img class="flag-image" src="{{ url_for('static', filename='img/lang/france.png') }}" alt="france-flag" width="80" height="53">
+                                </label>
+                            </div>
+                            <div class="form-column">
+                                <input type="radio" id="german" name="fav_language" value="german">
+                                <label for="german">
+                                    <img class="flag-image" src="{{ url_for('static', filename='img/lang/germany.png') }}" alt="france-flag" width="80" height="53">
+                                </label>
+                            </div>
+
+                            <div class="full-wdth clearfix">
+                                <a href="javascript:" class="next-btn float-right">Next</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-content" data-tab-content="general-settings">
+                    <form action="#">
+                        <h6>General Settings</h6>
+                        <div class="form-row forms-margin-top">
+                            <div class="form-column">
+                                <label>Application Name</label>
+                                <input type="text" class="text-field" placeholder="e.g. Pluto" value="Pluto">
+                            </div>
+                            <div class="form-column"></div>
+                            <div class="form-column">
+                                <label>Application Main Color</label>
+                                <label><input type="color" name="main-color" value="#3367d6"></label>
+                                <input type="text" class="text-field" placeholder="e.g. #ffffff" value="#3367d6" readonly>
+                            </div>
+                            <div class="form-column">
+                                <label>Application Secondary Color</label>
+                                <label><input type="color" name="secondary-color" value="#2a56c6"></label>
+                                <input type="text" class="text-field" placeholder="e.g. #ffffff" value="#2a56c6" readonly>
+                            </div>
+
+                            <div class="full-wdth clearfix">
+                                <a href="javascript:" class="next-btn float-right">Next</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="form-content" data-tab-content="google-settings">
+                    <form action="#">
+                        <h6>Google Settings</h6>
+                        <h5>By clicking Next, your Google settings are validated before going to next step!</h5>
+                        <div class="form-row">
+                            <div class="form-column">
+                                <label>Client ID</label>
+                                <input type="text" class="text-field" placeholder="e.g. ...iqlo2.apps.googleusercontent.com">
+                            </div>
+                            <div class="form-column">
+                                <label>Client Secret</label>
+                                <input type="password" class="text-field" placeholder="e.g. Dq8i...6uIRT">
+                            </div>
+                            <div class="form-column">
+                                <label>Project ID</label>
+                                <input type="text" class="text-field" placeholder="e.g. test-project-123456">
+                            </div>
+                            <div class="form-column">
+                                <label>Redirect URIs</label>
+                                <input type="text" class="text-field" placeholder="e.g. https://url_1, ..., https://url_n">
+                            </div>
+
+                            <div class="full-wdth clearfix">
+                                <a href="javascript:" class="next-btn float-right">Next</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-content" data-tab-content="terms-of-use">
+                    <form action="#">
+                        <h6>Terms Of Use</h6>
+                        <h5>By clicking Next, you agree to our Terms of Use.</h5>
+                        <div class="form-row">
+                            <div class="terms-of-use-div">
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pretium eros sit amet sem porttitor, eget sollicitudin mauris luctus. Etiam ipsum massa, lobortis vel ultricies eu, maximus id nunc. Pellentesque augue augue, pretium eget egestas ut, blandit a leo. Maecenas nibh risus, pretium in vestibulum condimentum, venenatis id sapien. Ut non dolor efficitur, pretium risus sed, porttitor arcu. Nullam rhoncus lobortis ligula non pharetra. Suspendisse eget sagittis arcu, aliquet lacinia tellus. Nullam sit amet maximus ligula. Suspendisse justo nisl, blandit et efficitur nec, condimentum ac est. Vestibulum ipsum nibh, ultrices a sem eget, consequat gravida diam.
+                                </p>
+                                <p>
+                                    Donec dui ligula, vehicula quis gravida ac, ultricies ac libero. Cras vitae dolor quis odio faucibus efficitur ut ut erat. Proin porttitor tellus a nunc venenatis, sit amet elementum libero suscipit. Quisque vitae dolor mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In quam velit, blandit quis elit eget, feugiat suscipit velit. Sed hendrerit, ligula ut fermentum egestas, tortor justo lobortis ante, sed lobortis sem mauris ac nisi. Praesent euismod augue in enim vestibulum, et hendrerit diam laoreet. Quisque ut cursus ante, congue tristique arcu. Suspendisse sit amet vehicula sapien. Ut sed urna ut tortor pretium pellentesque. Pellentesque ultrices purus et congue bibendum. Duis vestibulum velit ligula, vel malesuada ligula pretium in.
+                                </p>
+                            </div>
+
+                            <div class="full-wdth clearfix">
+                                <a href="javascript:" class="next-btn float-right">Next</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-content" data-tab-content="sign-in">
+                    <form action="#">
+                        <h6>Google Auth</h6>
+                        <h5>Log-in using your Google admin account.</h5>
+                        <div class="google-login-div">
+                            <a href="javascript:" class="google-login-button">Sign In</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Form Content - END -->
+        </div>
+    </body>
+</html>

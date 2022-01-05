@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+
+        <title>Preview</title>
+
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/diagram.css') }}">
+    </head>
+
+    <body>
+        <div id="wrap">
+
+            <!-- Header - START -->
+            <header>
+                <h1 class="logo">Pluto</h1>
+            </header>
+            <!-- Header - END -->
+
+            <!-- Content - START -->
+            <main class="content">
+                <div class="tree">
+                    <ul>
+                        <li id="diagram-content"></li>
+                    </ul>
+                </div>
+            </main>
+            <!-- Content - END -->
+
+            <!-- Footer - START -->
+            <footer class="footer">
+                <p>Test footer</p>
+            </footer>
+            <!-- Footer - END -->
+        </div>
+
+        <script src="{{ url_for('static', filename='js/diagram.js') }}"></script>
+    </body>
+</html>
