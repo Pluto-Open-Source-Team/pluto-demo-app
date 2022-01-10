@@ -172,7 +172,7 @@ function insertChildren(node, firstRound) {
             '<div class="dropdown">' +
                 '<a class="dropbtn">' +
                     '<div class="node-title">' + node.name + '</div>' +
-                    '<div class="node-sub-title">' + node.id + '</div>' +
+                    '<div class="node-sub-title">' + node.id + '</div>' + // TODO: Hide this ID from users
                 '</a>' +
                 '<div class="dropdown-content">' +
                     '<a href="#" class="margin-bot margin-top">Export Policies</a>' +
