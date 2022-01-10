@@ -8,3 +8,4 @@ Welcome to the Pluto Chrome Policy Management Tool!
 * /
 * /setup
 * /preview
+* /edit
