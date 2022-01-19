@@ -61,7 +61,7 @@ const app = async () => {
                     auth2Instance = gapi.auth2.getAuthInstance();
 
                     if (auth2Instance.isSignedIn.get()) { // is authenticated
-                        localStorage.setItem(STORAGE.ACCESS_TOKEN, authService.getAccessToken(auth2Instance));
+                        localStorage.setItem(STORAGE.ACCESS_TOKEN, JSON.stringify(authService.getAccessToken(auth2Instance)));
 
                         /*
                         render protected pages

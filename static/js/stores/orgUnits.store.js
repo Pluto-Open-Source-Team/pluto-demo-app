@@ -1,10 +1,10 @@
 import googleApiService from "../services/googleApi.service.js";
 
-export const orgUnitsStore = async (accessToken) => {
+export const orgUnitsStore = async () => {
     let orgUnitsFormatted = [];
     let orgUnitsChildren = [];
 
-    const ouDataResponse = await googleApiService.retrievesAllOrganizationalUnits(accessToken);
+    const ouDataResponse = await googleApiService.retrievesAllOrganizationalUnits();
 
     // Round 1: Format parents
     for (let i = 0; i < ouDataResponse.length; i++) {

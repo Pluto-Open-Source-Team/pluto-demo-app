@@ -81,9 +81,23 @@ let organizationUnitsAPIResponse = [
     }
 ];
 
+import authService from "../services/auth.service.js";
+import { STORAGE } from "../config.js";
+
+
 class GoogleApiService {
 
-    retrievesAllOrganizationalUnits = (accessToken) => new Promise((resolve, reject) => {
+    apiInterceptor = async () => {
+        const token = localStorage.getItem(STORAGE.ACCESS_TOKEN);
+
+        if (authService.isValidToken()) {
+            return JSON.parse(token).accessToken;
+        } else {
+            return await authService.getNewAccessToken();
+        }
+    };
+
+    retrievesAllOrganizationalUnits = () => new Promise((resolve, reject) => {
         resolve(organizationUnitsAPIResponse);
     });
 }

@@ -58,7 +58,7 @@ const Diagram = {
             '<ul id="root-nodes"></ul>';
 
         // Get OUs data
-        let orgUnitsData = await orgUnitsStore('');
+        let orgUnitsData = await orgUnitsStore();
 
         // Inserting children nodes
         for (let i = 0, len = orgUnitsData.length; i < len; i++) {
