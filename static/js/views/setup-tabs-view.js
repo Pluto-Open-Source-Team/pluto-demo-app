@@ -10,7 +10,7 @@ import {
     STORAGE
 } from "../config.js";
 import authService from "../services/auth.service.js";
-import { messageAlert } from "../services/alert.service.js";
+import { showAlert } from "../components/alerts.js";
 
 const TABS_NAMES = [
     {
@@ -219,11 +219,11 @@ const SetupTabs = {
                     })
                     .catch(() => {
                         handleButtonAnimation('saveButton', false, false);
-                        messageAlert.show('alert-message', ERR.GENERAL.message, ERR.GENERAL.color)
+                        showAlert('alert-message', ERR.GENERAL.message, ERR.GENERAL.color)
                     });
             } else {
                 handleButtonAnimation('saveButton', false, false);
-                messageAlert.show('alert-message', ERR.FIELD_REQUIRED.message, ERR.FIELD_REQUIRED.color);
+                showAlert('alert-message', ERR.FIELD_REQUIRED.message, ERR.FIELD_REQUIRED.color);
             }
         });
 
