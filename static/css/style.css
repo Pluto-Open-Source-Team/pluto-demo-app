@@ -2,7 +2,7 @@ html, body, #wrap {
     font-family: 'Lato', sans-serif;
     font-size: 16px;
 }
-*{
+* {
     box-sizing: border-box;
 }
 #wrap {
@@ -12,20 +12,21 @@ html, body, #wrap {
 .content {
     background: #ffffff;
 }
-header {
+#header {
+    overflow: hidden;
     background: #3367d6;
     color: #e4ebfa;
+    top: 0;
+    width: 100%;
+}
+#footer {
+    position: fixed;
+    background: #f2f2f2;
+    color: #70757a;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     text-align: center;
-    padding: 10px 0;
-}
-header, .footer {
-    display: block;
-}
-header, .footer {
-    display: table-row;
-}
-header, .footer {
-    height: 1px;
 }
 h1 {
     padding: 7px 20px;
@@ -36,15 +37,6 @@ h1 {
     float: left;
     font-size: 2em;
     text-decoration: none;
-}
-.footer {
-    background: #f2f2f2;
-    color: #70757a;
-    text-align: center;
-}
-.footer p {
-    margin: 0;
-    padding: 10px;
 }
 
 /* The Modal - START */
