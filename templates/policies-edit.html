@@ -6,6 +6,8 @@
 
         <title>Pluto</title>
 
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <script type="module" src="{{ url_for('static', filename='js/app.js') }}"></script>
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/policies-edit-style.css') }}">
     </head>
@@ -79,7 +81,5 @@
             </footer>
             <!-- Footer - END -->
         </div>
-
-        <script src="{{ url_for('static', filename='js/policies-edit-script.js') }}"></script>
     </body>
 </html>

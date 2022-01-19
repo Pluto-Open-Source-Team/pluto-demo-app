@@ -7,7 +7,12 @@ export const AUTH = {
 };
 
 export const STORAGE = {
-    APP_SETTINGS: 'APP_SETTINGS'
+    APP_SETTINGS: 'APP_SETTINGS',
+    ACCESS_TOKEN: 'ACCESS_TOKEN'
+};
+
+export const EVENTS = {
+    USER_AUTHENTICATED: 'USER_AUTHENTICATED'
 };
 
 export const ERR = {

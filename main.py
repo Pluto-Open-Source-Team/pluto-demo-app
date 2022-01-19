@@ -16,7 +16,7 @@
 # [START gae_python3_render_template]
 import datetime
 
-from flask import Flask, render_template
+from flask import Flask, session, render_template
 
 app = Flask(__name__)
 
@@ -25,10 +25,6 @@ app = Flask(__name__)
 @app.route('/')
 def root():
     return render_template('index.html')
-
-@app.route('/setup')
-def setup():
-    return render_template('pre-use.html')
 
 @app.route('/preview')
 def preview():

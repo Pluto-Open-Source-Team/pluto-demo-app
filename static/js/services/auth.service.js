@@ -1,3 +1,7 @@
+import {
+    EVENTS, STORAGE
+} from "../config.js";
+
 class AuthService {
 
     initGoogleAuth = (params) => new Promise((resolve, reject) => {
@@ -14,9 +18,21 @@ class AuthService {
         gapi.auth2.getAuthInstance().signIn();
     };
 
-    getAccessToken = () => {
-        console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
-        console.log(gapi.auth2.getAuthInstance());
+    signedInCallback = (isSignedIn) => {
+        if (isSignedIn) {
+            localStorage.setItem(STORAGE.ACCESS_TOKEN, this.getAccessToken(gapi.auth2.getAuthInstance()));
+
+            const event = new CustomEvent(EVENTS.USER_AUTHENTICATED, {
+                detail: {
+                    isAuthenticated: true
+                }
+            });
+            document.dispatchEvent(event);
+        }
+    };
+
+    getAccessToken = (auth2) => {
+        return auth2.currentUser.get().getAuthResponse().access_token
     };
 }
 
