@@ -54,7 +54,7 @@ label {
 }
 .pre-use-form-wrapper .form-tab-highlight {
     position: absolute;
-    width: 153.4px;
+    width: 254px;
     left: 0;
     top: -4px;
     bottom: -4px;
@@ -179,10 +179,72 @@ label {
     margin-top: 80px;
 }
 .google-login-button {
+    background-color: #ffffff;
+    color: #444;
+    border-radius: 4px;
+    border: thin solid #888;
+    box-shadow: 1px 1px 1px grey;
+    white-space: nowrap;
+    text-decoration: none;
+    margin-top: 20px;
+
+    display: block;
+    padding: 2px;
+    width: 30%;
+
+    position: relative;
+    z-index: 1;
+
+    font-family: 'Roboto', sans-serif;
+    font-weight: normal;
+}
+
+.iconButton {
+    background: url('/static/img/g-icon.png') transparent 5px 50% no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    width: 42px;
+    height: 42px;
+}
+
+.google-login-button:disabled,
+.google-login-button[disabled]{
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}
+
+/* Loading icon */
+.processing-icon {
+    display: inline-block;
+}
+.processing-icon:after {
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    border: 6px solid #ffffff;
+    border-color: #ffffff transparent #ffffff transparent;
+    animation: processing-icon 1.2s linear infinite;
+}
+@keyframes processing-icon {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.disabled-link {
+    pointer-events: none;
+}
+
+.save-button {
     background-color: #2a56c6;
     color: #ffffff;
     display: inline-block;
     padding: 6px 26px;
     border-radius: 4px;
+    margin-top: 20px;
     text-decoration: none;
 }

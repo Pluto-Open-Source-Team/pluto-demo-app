@@ -123,3 +123,33 @@ button:hover {
     display: inline-block;
 }
 /* Modal Cards - END */
+
+/* Alert - START*/
+.alert {
+    position: absolute;
+    z-index: 1000;
+    padding: 20px;
+    background-color: #fa776d;
+    color: white;
+    left: 50%;
+    top: 30%;
+    border-radius: 10px;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+/* Alert - END*/
