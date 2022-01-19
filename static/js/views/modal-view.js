@@ -1,3 +1,10 @@
+import Diagram from '../views/diagram-view.js'
+
+const renderDiagram = async (elem) => {
+    elem.innerHTML = await Diagram.render();
+    await Diagram.post_render();
+};
+
 const Modal = {
     /**
      * Render the component content.
@@ -33,11 +40,19 @@ const Modal = {
         let importPoliciesFromFileBtn = document.getElementById("importPoliciesFromFileBtn");
         let importPoliciesFromOUsBtn = document.getElementById("importPoliciesFromOUsBtn");
         let backupPoliciesBtn = document.getElementById("backupPoliciesBtn");
+        let contentElement = document.getElementById('content');
 
         // Show Modal
         modal.style.display = "block";
 
         // Import Policies From Organizational Unit
+        importPoliciesFromOUsBtn.addEventListener("click", async (event) => {
+            // Hide Modal
+            modal.style.display = "none";
+
+            // Render OU Preview
+            await renderDiagram(contentElement);
+        });
     }
 };
 

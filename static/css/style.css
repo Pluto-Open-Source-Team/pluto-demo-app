@@ -391,3 +391,131 @@ label {
     text-decoration: none;
 }
 /* Setup Tabs - END */
+
+/* Diagram - START */
+
+.tree a[href=""] {
+    cursor: default;
+}
+.tree ul {
+    position: relative;
+    padding: 1em 0;
+    white-space: nowrap;
+    margin: 0 auto;
+    text-align: center;
+}
+.tree ul:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.tree ul ul:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-left: 1px solid #ccc;
+    width: 0;
+    height: 1em;
+}
+.tree ul li {
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 1em 0.5em 0;
+    margin-left: -0.25em;
+    margin-right: -0.25em;
+}
+.tree ul li:before, .tree ul li:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 50%;
+    border-top: 1px solid #ccc;
+    width: 50%;
+    height: 1em;
+}
+.tree ul li:after {
+    right: auto;
+    left: 50%;
+    border-left: 1px solid #ccc;
+}
+.tree ul li:only-child:after, .tree ul li:only-child:before {
+    display: none;
+}
+.tree ul li:only-child {
+    padding-top: 0;
+}
+.tree ul li:first-child:before, .tree ul li:last-child:after {
+    border: 0 none;
+}
+.tree ul li:last-child:before {
+    border-right: 1px solid #ccc;
+    border-radius: 0 1em 0 0;
+}
+.tree ul li:first-child:after {
+    border-radius: 1em 0 0 0;
+}
+.tree ul li a {
+    border: 1px solid #000000;
+    padding: 0.75em;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 0.3em;
+    color: #333;
+    position: relative;
+}
+
+.node-title {
+    font-weight: bold;
+}
+
+.node-sub-title {
+    color: #ccc;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #eaeaea;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    white-space: pre-line
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #92b1f5;}
+
+.margin-bot {
+    margin-bottom: 10px;
+}
+
+.margin-top {
+    margin-top: 10px;
+}
+
+/* Diagram - END */
