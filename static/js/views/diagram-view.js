@@ -38,7 +38,15 @@ const Diagram = {
     render: async () => {
         return `
             <div class="info-note">
-                <p><strong>Important Information!</strong> Hover on the organizational unit you want to edit, and click on <strong>Edit Policies</strong>.<br> It is recommended to export settings before editing.</p>
+                <p>
+                    <strong>Important Information!</strong>&nbsp;&nbsp;It is recommended to export settings before editing.
+                    <br>
+                    <br>
+                    These namespaces are the one available in this version:<br>
+                    + <strong>chrome.users.*</strong>
+                    <br>
+                    + <strong>chrome.devices.*</strong>
+                </p>
             </div>
             <div class="tree">
                 <ul>
