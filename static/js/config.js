@@ -15,6 +15,12 @@ export const EVENTS = {
     USER_AUTHENTICATED: 'USER_AUTHENTICATED'
 };
 
+export const API = {
+    G_ADMIN_HOST: 'https://admin.googleapis.com',
+    G_CHROME_POLICY_HOST: 'https://chromepolicy.googleapis.com',
+    G_CUSTOMER: 'my_customer'
+};
+
 export const ERR = {
     GENERAL: {
         color: '#f69595',
