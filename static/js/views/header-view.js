@@ -3,7 +3,11 @@ const Header = {
      * Render the component content.
      */
     render: async () => {
-        return `<h1 class="logo">Pluto</h1>`;
+        return `
+            <div class="main-logo-holder main-logo">
+                <h3>Chrome Policy Manager <span class="sub-title-main-logo">By Pluto</span></h3>
+            </div>
+        `;
     },
 
     /**

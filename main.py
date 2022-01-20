@@ -26,10 +26,6 @@ app = Flask(__name__)
 def root():
     return render_template('index.html')
 
-@app.route('/preview')
-def preview():
-    return render_template('ous-preview.html')
-
 @app.route('/edit')
 def policiesEdit():
     return render_template('policies-edit.html')

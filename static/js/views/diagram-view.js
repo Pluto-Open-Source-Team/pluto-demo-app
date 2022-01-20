@@ -17,11 +17,10 @@ const insertChildren = (node, firstRound) => {
             '<div class="dropdown">' +
                 '<a class="dropbtn">' +
                     '<div class="node-title">' + node.name + '</div>' +
-                    '<div class="node-sub-title">' + node.id + '</div>' + // TODO: Hide this ID from users
                 '</a>' +
                 '<div class="dropdown-content">' +
-                    '<a href="#" class="margin-bot margin-top">Export Policies</a>' +
-                    '<a href="#" class="margin-bot">Edit Policies</a>' +
+                    '<a href="#" class="margin-bot margin-top diagram-export-button" data-node-id="' + node.id + '">Export Policies</a>' +
+                    '<a href="#" class="margin-bot diagram-edit-button" data-node-id="' + node.id + '">Edit Policies</a>' +
                 '</div>' +
             '</div>' +
             childrenHtml +
@@ -38,6 +37,9 @@ const Diagram = {
      */
     render: async () => {
         return `
+            <div class="info-note">
+                <p><strong>Important Information!</strong> Hover on the organizational unit you want to edit, and click on <strong>Edit Policies</strong>.<br> It is recommended to export settings before editing.</p>
+            </div>
             <div class="tree">
                 <ul>
                     <li id="diagramContent"></li>

@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Bangers|Cinzel:400,700,900|Lato:100,300,400,700,900|Lobster|Lora:400,700|Mansalva|Muli:200,300,400,600,700,800,900|Open+Sans:300,400,600,700,800|Oswald:200,300,400,500,600,700|Roboto:100,300,400,500,700,900&display=swap');
 html, body, #wrap {
     font-family: 'Lato', sans-serif;
     font-size: 16px;
 }
+/*body {
+    background-image: url("https://www.transparenttextures.com/patterns/clean-gray-paper.png");
+}*/
 * {
     box-sizing: border-box;
 }
@@ -18,6 +22,7 @@ html, body, #wrap {
     color: #e4ebfa;
     top: 0;
     width: 100%;
+    margin-bottom: 30px;
 }
 #footer {
     position: fixed;
@@ -37,6 +42,27 @@ h1 {
     float: left;
     font-size: 2em;
     text-decoration: none;
+}
+
+/* Logo-4 */
+.main-logo-holder{
+    text-align: left;
+    margin-left: 10px;
+}
+.main-logo h3 {
+    color: #ffffff;
+    font-size: 1.8em;
+    font-weight: 300;
+    line-height: 0.3;
+    font-family: 'Lobster', cursive;
+    transform: scaleY(1.1);
+}
+.sub-title-main-logo {
+    font-size: 14px;
+    color: #545454;
+    text-transform: capitalize;
+    font-style: italic;
+    font-family: 'Mansalva', cursive;
 }
 
 /* The Modal - START */
@@ -507,6 +533,9 @@ label {
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
 
+.dropbtn {
+    width: 230px;
+}
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {background-color: #92b1f5;}
 
@@ -519,3 +548,14 @@ label {
 }
 
 /* Diagram - END */
+
+/* Notes - START */
+.info-note {
+    background-color: #e7f3fe;
+    border-left: 6px solid #2196F3;
+    margin: auto;
+    padding: 4px 12px;
+    width: 80%;
+}
+
+/* Notes - END */
