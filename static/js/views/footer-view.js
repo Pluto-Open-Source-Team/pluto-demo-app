@@ -3,7 +3,7 @@ const Footer = {
      * Render the component content.
      */
     render: async () => {
-        return `<p>Test footer</p>`;
+        return `<p><span class="footer-part-1">&copy; 2022 Pluto. All Rights Reserved</span><span class="footer-part-2"><a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></span></p>`;
     },
 
     /**

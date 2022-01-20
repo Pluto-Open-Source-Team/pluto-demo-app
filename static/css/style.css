@@ -33,6 +33,16 @@ html, body, #wrap {
     width: 100%;
     text-align: center;
 }
+.footer-part-1 {
+    float: left;
+    margin-left: 20px;
+    margin-bottom: 13px;
+}
+.footer-part-2 {
+    float: right;
+    margin-right: 20px;
+    margin-bottom: 13px;
+}
 h1 {
     padding: 7px 20px;
     margin: 0;
