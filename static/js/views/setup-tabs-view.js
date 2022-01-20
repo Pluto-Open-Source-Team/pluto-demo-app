@@ -32,17 +32,22 @@ const LANGUAGES = [
         label: 'english',
         flagImg: 'static/img/lang/united-kingdom.png',
         imgAlt: 'uk-flag',
-        checked: true
+        checked: true,
+        disabled: false
     },
     {
         label: 'french',
         flagImg: 'static/img/lang/france.png',
-        imgAlt: 'france-flag'
+        imgAlt: 'france-flag',
+        checked: false,
+        disabled: true
     },
     {
         label: 'german',
         flagImg: 'static/img/lang/germany.png',
-        imgAlt: 'german-flag'
+        imgAlt: 'german-flag',
+        checked: false,
+        disabled: true
     }
 ];
 
@@ -68,13 +73,17 @@ const tabs = (tabsNames) => {
 };
 
 const languagesSection = (languages) => {
-    const _languages = languages.map(({label, flagImg, imgAlt, checked}) => {
+    const _languages = languages.map(({label, flagImg, imgAlt, checked, disabled}) => {
         const _checked = checked ? 'checked' : '';
+        const _class = disabled ? 'flag-image disable-div' : 'flag-image';
+        const _disabled = disabled ? 'disabled' : '';
+        const tooltipMessage = disabled ? '<span class="tooltip-text">Will be available next release!</span>' : ''
         return `
             <div class="form-column">
-                <input type="radio" id="${label}" name="fav_language" value="${label}" ${_checked}>
-                <label for="${label}">
-                    <img class="flag-image" src="${flagImg}" alt="${imgAlt}" width="80" height="53">
+                <input type="radio" id="${label}" name="fav_language" value="${label}" ${_checked} ${_disabled}>
+                <label for="${label}" class="tooltip">
+                    <img class="${_class}" src="${flagImg}" alt="${imgAlt}" width="80" height="53">
+                    ${tooltipMessage}
                 </label>
             </div>
         `;
@@ -84,7 +93,7 @@ const languagesSection = (languages) => {
         <div class="form-content show" data-tab-content="language">
             <form action="#">
                 <h6>Select Language</h6>
-                <h5>Please select the language you would like to use while running Pluto</h5>
+                <h5>Please select the language you would like to use while running the application.</h5>
                 <div class="form-row forms-margin-top">
                     ${_languages}
                     

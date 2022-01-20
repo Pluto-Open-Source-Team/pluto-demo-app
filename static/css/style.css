@@ -569,3 +569,36 @@ label {
 }
 
 /* Notes - END */
+
+.disable-div {
+    cursor: no-drop;
+    opacity: 0.4;
+}
+
+/* Tooltip - START */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 120px;
+    background-color: #bebebe;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+}
+/* Tooltip - END */
