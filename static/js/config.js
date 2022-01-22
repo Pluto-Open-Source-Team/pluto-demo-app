@@ -21,6 +21,8 @@ export const API = {
     G_CUSTOMER: 'my_customer'
 };
 
+export const POLICIES_NAMESPACES = ['chrome.users.*', 'chrome.devices.*'];
+
 export const ERR = {
     GENERAL: {
         color: '#f69595',

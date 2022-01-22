@@ -76,7 +76,7 @@ const app = async () => {
                     await renderSetupPage(contentElement);
                 }
             })
-            .catch(async () => { // TODO: handle error
+            .catch(async () => {
                 await renderSetupPage(contentElement);
             });
     } else {

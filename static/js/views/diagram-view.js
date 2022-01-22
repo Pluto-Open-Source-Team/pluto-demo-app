@@ -1,4 +1,7 @@
 import { orgUnitsStore } from "../stores/orgUnits.store.js";
+import googleApiService from "../services/googleApi.service.js";
+import { POLICIES_NAMESPACES } from "../config.js";
+import { showAlert } from "../components/pageLoader.js";
 
 const insertChildren = (node, firstRound) => {
     let elementId = node.parentId;
@@ -19,8 +22,8 @@ const insertChildren = (node, firstRound) => {
                     '<div class="node-title">' + node.name + '</div>' +
                 '</a>' +
                 '<div class="dropdown-content">' +
-                    '<a href="#" class="margin-bot margin-top diagram-export-button" data-node-id="' + node.id + '">Export Policies</a>' +
-                    '<a href="#" class="margin-bot diagram-edit-button" data-node-id="' + node.id + '">Edit Policies</a>' +
+                    '<a href="#" class="margin-bot margin-top export-policies-button" data-node-id="' + node.id + '">Export Policies</a>' +
+                    '<a href="#" class="margin-bot edit-policies-button" data-node-id="' + node.id + '">Edit Policies</a>' +
                 '</div>' +
             '</div>' +
             childrenHtml +
@@ -61,6 +64,7 @@ const Diagram = {
      */
     post_render: async () => {
         let diagramContent = document.getElementById('diagramContent');
+        let contentElement = document.getElementById('content');
 
         // Inserting parent node
         diagramContent.innerHTML = '' +
@@ -74,6 +78,32 @@ const Diagram = {
         for (let i = 0, len = orgUnitsData.length; i < len; i++) {
             insertChildren(orgUnitsData[i], true);
         }
+
+        diagramContent.addEventListener("click", async (event) => {
+
+            if (event.target && event.target.getAttribute('class') && event.target.getAttribute('class').includes('edit-policies-button')) {
+                let nodeId = event.target.getAttribute('data-node-id');
+
+                // Start page loader
+                showAlert(contentElement, true, 'Preparing to fetch policies...');
+
+                let alertMessageElement = document.getElementById('loaderSubText');
+
+                // Render edit page and process data
+                // let policies = await googleApiService.getResolvedPolicies(nodeId.substr(nodeId.indexOf(':') + 1), 'chrome.users.*');
+                let policies = await googleApiService.getResolvedPoliciesPromiseAll(nodeId.substr(nodeId.indexOf(':') + 1), POLICIES_NAMESPACES, alertMessageElement);
+
+                if (policies) {
+                    showAlert(contentElement, false);
+
+                    console.log('oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo');
+                    console.log(policies);
+                    console.log('oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo');
+                } else {
+                    // TODO: call diagram back -- maybe use Events
+                }
+            }
+        });
     }
 };
 
