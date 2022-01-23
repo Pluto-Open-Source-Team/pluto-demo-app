@@ -109,7 +109,6 @@ class GoogleApiService {
             };
 
             return new Promise(resolve => setTimeout(resolve, delay)).then(() => {
-                console.log('fetching: ' + namespace + '...');
                 messageElement.innerHTML = `<p>Fetching <strong>${namespace}</strong> policies...</p>`;
                 return fetch(url, {
                     method: 'POST',

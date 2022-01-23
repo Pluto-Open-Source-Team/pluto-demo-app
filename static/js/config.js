@@ -23,6 +23,8 @@ export const API = {
 
 export const POLICIES_NAMESPACES = ['chrome.users.*', 'chrome.devices.*'];
 
+export const POLICIES_BLOCKLIST = ['chrome.users.RemoteAccessHostClientDomainList', 'chrome.users.ManagedBookmarksSetting'];
+
 export const ERR = {
     GENERAL: {
         color: '#f69595',

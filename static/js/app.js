@@ -7,7 +7,6 @@ import SetupTabs from './views/setup-tabs-view.js'
 import Header from './views/header-view.js'
 import Footer from './views/footer-view.js'
 import Modal from './views/modal-view.js'
-import EditPolicies from './views/edit-policies-view.js'
 import authService from "./services/auth.service.js";
 
 const renderSetupPage = async (elem) => {
@@ -26,11 +25,6 @@ const renderHeaderNFooter = async (headerElem, footerElem) => {
 const renderMainModal = async (elem) => {
     elem.innerHTML = await Modal.render();
     await Modal.post_render();
-};
-
-const renderEditPoliciesPage = async (elem) => {
-    elem.innerHTML = await EditPolicies.render();
-    await EditPolicies.post_render();
 };
 
 const app = async () => {
@@ -73,8 +67,7 @@ const app = async () => {
                         render protected pages
                          */
                         await renderHeaderNFooter(headerElement, footerElement); // Render Header and Footer
-                        // await renderMainModal(contentElement); // Render Main Modal TODO pppppppppppppp
-                        await renderEditPoliciesPage(contentElement);
+                        await renderMainModal(contentElement); // Render Main Modal
 
                     } else { // not authenticated
                         await renderSetupPage(contentElement);

@@ -30,6 +30,9 @@ def root():
 def policiesEdit():
     return render_template('policies-edit.html')
 
+@app.route('/tree')
+def tree():
+    return render_template('tree.html')
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App

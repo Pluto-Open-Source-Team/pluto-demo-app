@@ -1,7 +1,8 @@
 import { orgUnitsStore } from "../stores/orgUnits.store.js";
-import googleApiService from "../services/googleApi.service.js";
+import { resolvedPoliciesStore } from "../stores/resolvedPolicies.store.js";
 import { POLICIES_NAMESPACES } from "../config.js";
 import { showAlert } from "../components/pageLoader.js";
+import EditPolicies from "./edit-policies-view.js";
 
 const insertChildren = (node, firstRound) => {
     let elementId = node.parentId;
@@ -32,6 +33,11 @@ const insertChildren = (node, firstRound) => {
     for (let i = 0, len = node.children.length; i < len; i++) {
         insertChildren(node.children[i], false);
     }
+};
+
+const renderEditPoliciesPage = async (elem) => {
+    elem.innerHTML = await EditPolicies.render();
+    await EditPolicies.post_render();
 };
 
 const Diagram = {
@@ -90,11 +96,11 @@ const Diagram = {
                 let alertMessageElement = document.getElementById('loaderSubText');
 
                 // Render edit page and process data
-                // let policies = await googleApiService.getResolvedPolicies(nodeId.substr(nodeId.indexOf(':') + 1), 'chrome.users.*');
-                let policies = await googleApiService.getResolvedPoliciesPromiseAll(nodeId.substr(nodeId.indexOf(':') + 1), POLICIES_NAMESPACES, alertMessageElement);
+                let policies = await resolvedPoliciesStore(nodeId.substr(nodeId.indexOf(':') + 1), POLICIES_NAMESPACES, alertMessageElement);
 
                 if (policies) {
                     showAlert(contentElement, false);
+                    await renderEditPoliciesPage(contentElement);
 
                     console.log('oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo');
                     console.log(policies);
