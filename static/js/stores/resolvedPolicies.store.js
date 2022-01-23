@@ -5,7 +5,7 @@ import {
 } from "../config.js";
 
 export const resolvedPoliciesStore = async (orgUnitId, allSchemaNamespaces, messageElement) => {
-    let trimmedPolicies = [];
+    let trimmedPolicies = {};
 
     const policiesDataResponse = await googleApiService.getResolvedPoliciesPromiseAll(orgUnitId, allSchemaNamespaces, messageElement);
 
@@ -35,9 +35,7 @@ export const resolvedPoliciesStore = async (orgUnitId, allSchemaNamespaces, mess
             }
         }
 
-        trimmedPolicies.push({
-            [POLICIES_NAMESPACES[i]]: formattedPolicies
-        });
+        trimmedPolicies[POLICIES_NAMESPACES[i]] = formattedPolicies;
     }
 
     function getLeafValue(object, key) {

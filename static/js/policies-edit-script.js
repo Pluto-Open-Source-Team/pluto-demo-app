@@ -273,7 +273,7 @@ let policiesDataResponse = {
     ]
 };
 
-let trimmedPolicies = [];
+let trimmedPolicies = {};
 
 for (let i = 0; i < POLICIES_NAMESPACES.length; i++) {
     let formattedPolicies = [];
@@ -301,9 +301,7 @@ for (let i = 0; i < POLICIES_NAMESPACES.length; i++) {
         }
     }
 
-    trimmedPolicies.push({
-        [POLICIES_NAMESPACES[i]]: formattedPolicies
-    });
+    trimmedPolicies[POLICIES_NAMESPACES[i]] = formattedPolicies;
 }
 
 function getLeafValue(object, key) {

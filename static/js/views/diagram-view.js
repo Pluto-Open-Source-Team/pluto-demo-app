@@ -24,7 +24,7 @@ const insertChildren = (node, firstRound) => {
                 '</a>' +
                 '<div class="dropdown-content">' +
                     '<a href="#" class="margin-bot margin-top export-policies-button" data-node-id="' + node.id + '">Export Policies</a>' +
-                    '<a href="#" class="margin-bot edit-policies-button" data-node-id="' + node.id + '">Edit Policies</a>' +
+                    '<a href="#" class="margin-bot edit-policies-button" data-node-id="' + node.id + '" data-node-path="' + node.path + '">Edit Policies</a>' +
                 '</div>' +
             '</div>' +
             childrenHtml +
@@ -35,8 +35,8 @@ const insertChildren = (node, firstRound) => {
     }
 };
 
-const renderEditPoliciesPage = async (elem) => {
-    elem.innerHTML = await EditPolicies.render();
+const renderEditPoliciesPage = async (elem, _policies, ouPathName) => {
+    elem.innerHTML = await EditPolicies.render(_policies, ouPathName);
     await EditPolicies.post_render();
 };
 
@@ -89,6 +89,7 @@ const Diagram = {
 
             if (event.target && event.target.getAttribute('class') && event.target.getAttribute('class').includes('edit-policies-button')) {
                 let nodeId = event.target.getAttribute('data-node-id');
+                let nodePath = event.target.getAttribute('data-node-path');
 
                 // Start page loader
                 showAlert(contentElement, true, 'Preparing to fetch policies...');
@@ -100,11 +101,7 @@ const Diagram = {
 
                 if (policies) {
                     showAlert(contentElement, false);
-                    await renderEditPoliciesPage(contentElement);
-
-                    console.log('oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo');
-                    console.log(policies);
-                    console.log('oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo');
+                    await renderEditPoliciesPage(contentElement, policies, nodePath);
                 } else {
                     // TODO: call diagram back -- maybe use Events
                 }

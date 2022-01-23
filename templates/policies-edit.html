@@ -21,7 +21,7 @@
             <!-- Header - END -->
 
             <!-- Content - START -->
-            <main class="content">
+            <main class="content" id="content">
                 <div class="sub-content">
                     <div>
                         <h3 class="edit-policies-title">/User/Office 365/Chromebook</h3>
@@ -31,8 +31,8 @@
                             <th style="width:40%">chrome.users.*</th>
                             <th></th>
                         </tr>
-                        <tr class="row">
-                            <td>chrome.users.IsAllowSomething</td>
+                        <tr>
+                            <td class="child-row">chrome.users.IsAllowSomething</td>
                             <td>
                                 <label class="switch">
                                     <input type="checkbox">
@@ -40,8 +40,8 @@
                                 </label>
                             </td>
                         </tr>
-                        <tr class="row">
-                            <td>chrome.users.BrowserThemeColor</td>
+                        <tr>
+                            <td class="child-row">chrome.users.BrowserThemeColor</td>
                             <td>
                                 <input type="color" id="head" name="head" value="#4DB246">
                             </td>
@@ -50,14 +50,14 @@
                             <th style="width:40%">chrome.devices.*</th>
                             <th></th>
                         </tr>
-                        <tr class="row">
-                            <td>chrome.devices.SomeValue</td>
+                        <tr>
+                            <td class="child-row">chrome.devices.SomeValue</td>
                             <td>
-                                <input type="text" placeholder="Enter stuff" name="testo" id="testo" value="stuff" required>
+                                <input class="editValueInputText" type="text" placeholder="Enter stuff" name="testo" id="testo" value="stuff" required>
                             </td>
                         </tr>
-                        <tr class="row">
-                            <td>chrome.devices.BlaType</td>
+                        <tr>
+                            <td class="child-row">chrome.devices.BlaType</td>
                             <td>
                                 <select id="types" name="types">
                                     <option value="1">NOT_INSTALLED</option>

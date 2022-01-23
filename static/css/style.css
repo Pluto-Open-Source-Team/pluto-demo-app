@@ -649,12 +649,17 @@ table {
 }
 
 th, td {
-    text-align: center;
+    text-align: left;
     padding: 16px;
 }
 
 th:first-child, td:first-child {
     text-align: left;
+}
+
+.edit-table-div {
+    overflow-y: scroll;
+    height: 600px;
 }
 /* END - Table Style */
 
@@ -725,17 +730,17 @@ input:checked + .slider:before {
 
 .sub-content {
     margin-top: 100px;
-    width:70%;
-    margin-left:15%;
-    margin-right:15%;
+    width:90%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.row {
+.child-row {
     text-indent: 2em;
 }
 
 .editValueInputText {
-    width:60%;
+    width:90%;
     padding: 8px;
     border: none;
     background: #f1f1f1;
