@@ -189,7 +189,7 @@ const SetupTabs = {
             }
         }
 
-        saveButton.addEventListener("click", () => {
+        saveButton.addEventListener("click", async () => {
             let clientIdValidated = true;
             let appSettings = {};
 
@@ -212,24 +212,33 @@ const SetupTabs = {
 
             // TODO: add client ID validation process
             if (clientIdValidated && clientIDInput.value.trim()) {
-                // Save settings to local storage
-                localStorage.setItem(STORAGE.APP_SETTINGS, JSON.stringify(appSettings));
+                try {
+                    // Validate client ID
+                    let isClientIdValid = await authService.validateClientId({client_id: clientIDInput.value.trim()});
 
-                // Initialize Google Auth
-                authService.initGoogleAuth({
-                    client_id: clientIDInput.value.trim(),
-                    scope: AUTH.SCOPE
-                })
-                    .then(() => {
+                    if (isClientIdValid) {
+                        // Save settings to local storage
+                        localStorage.setItem(STORAGE.APP_SETTINGS, JSON.stringify(appSettings));
+
+                        // Initialize Google Auth
+                        await authService.initGoogleAuth({
+                            client_id: clientIDInput.value.trim(),
+                            scope: AUTH.SCOPE
+                        });
+
                         // Display Sign In button
                         handleSignInButton(buttonsContainer, true);
 
+                        // Add listener to sign in
                         gapi.auth2.getAuthInstance().isSignedIn.listen(authService.signedInCallback);
-                    })
-                    .catch(() => {
+                    } else {
                         handleButtonAnimation('saveButton', false, false);
-                        showAlert('alert-message', ERR.GENERAL.message, ERR.GENERAL.color)
-                    });
+                        showAlert('alert-message', ERR.CLIENT_ID.message, ERR.CLIENT_ID.color);
+                    }
+                } catch (e) {
+                    handleButtonAnimation('saveButton', false, false);
+                    showAlert('alert-message', ERR.GENERAL.message, ERR.GENERAL.color)
+                }
             } else {
                 handleButtonAnimation('saveButton', false, false);
                 showAlert('alert-message', ERR.FIELD_REQUIRED.message, ERR.FIELD_REQUIRED.color);

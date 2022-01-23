@@ -1,5 +1,7 @@
 import {
-    EVENTS, STORAGE
+    EVENTS,
+    STORAGE,
+    AUTH
 } from "../config.js";
 
 class AuthService {
@@ -12,6 +14,25 @@ class AuthService {
                 reject(err);
             });
         });
+    });
+
+    // A Hack function to resolve gapi.auth2.init instantiation
+    validateClientId = (params) => new Promise((resolve, reject) => {
+        fetch(`${AUTH.VALIDATION_URL}${params.client_id}`, {
+            method: 'POST'
+        })
+            .then(async (res) => {
+                let parsedData = await res.json();
+
+                if (parsedData.error_description === 'The OAuth client was not found.') {
+                    resolve(false);
+                } else {
+                    resolve(true);
+                }
+            })
+            .catch((err) => {
+                resolve(false); // We need resolve in here to not throw error
+            });
     });
 
     handleSignIn = () => {

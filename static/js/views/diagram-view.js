@@ -23,7 +23,7 @@ const insertChildren = (node, firstRound) => {
                     '<div class="node-title">' + node.name + '</div>' +
                 '</a>' +
                 '<div class="dropdown-content">' +
-                    '<a href="#" class="margin-bot margin-top export-policies-button" data-node-id="' + node.id + '">Export Policies</a>' +
+                    '<a href="#" class="margin-bot margin-top export-policies-button" data-node-id="' + node.id + '">Download Policies</a>' +
                     '<a href="#" class="margin-bot edit-policies-button" data-node-id="' + node.id + '" data-node-path="' + node.path + '">Edit Policies</a>' +
                 '</div>' +
             '</div>' +
