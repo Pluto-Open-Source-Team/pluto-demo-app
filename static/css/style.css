@@ -74,6 +74,10 @@ h1 {
     font-style: italic;
     font-family: 'Mansalva', cursive;
 }
+.main-logo-link {
+    text-decoration: none;
+    color: #ffffff;
+}
 
 /* The Modal - START */
 

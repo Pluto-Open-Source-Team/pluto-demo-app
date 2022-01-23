@@ -12,9 +12,11 @@ const Header = {
         const appName = appSettings ? JSON.parse(appSettings).appName : APP.NAME;
 
         return `
-            <div class="main-logo-holder main-logo">
-                <h3>${appName} <span class="sub-title-main-logo">By Pluto</span></h3>
-            </div>
+            <a href="/" class="main-logo-link">
+                <div class="main-logo-holder main-logo">
+                    <h3>${appName} <span class="sub-title-main-logo">By Pluto</span></h3>
+                </div>
+            </a>
         `;
     },
 
