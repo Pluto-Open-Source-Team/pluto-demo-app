@@ -8,6 +8,7 @@ import Header from './views/header-view.js'
 import Footer from './views/footer-view.js'
 import Modal from './views/modal-view.js'
 import authService from "./services/auth.service.js";
+import Diagram from "./views/diagram-view.js";
 
 const renderSetupPage = async (elem) => {
     elem.innerHTML = await SetupTabs.render();
@@ -25,6 +26,11 @@ const renderHeaderNFooter = async (headerElem, footerElem) => {
 const renderMainModal = async (elem) => {
     elem.innerHTML = await Modal.render();
     await Modal.post_render();
+};
+
+const renderDiagram = async (elem) => {
+    elem.innerHTML = await Diagram.render();
+    await Diagram.post_render();
 };
 
 const app = async () => {
@@ -45,7 +51,8 @@ const app = async () => {
              render protected pages
              */
             await renderHeaderNFooter(headerElement, footerElement); // Render Header and Footer
-            await renderMainModal(contentElement); // Render Main Modal
+            // await renderMainModal(contentElement); // Render Main Modal
+            await renderDiagram(contentElement);
         } else {
             await renderSetupPage(contentElement);
         }
@@ -67,7 +74,8 @@ const app = async () => {
                         render protected pages
                          */
                         await renderHeaderNFooter(headerElement, footerElement); // Render Header and Footer
-                        await renderMainModal(contentElement); // Render Main Modal
+                        // await renderMainModal(contentElement); // Render Main Modal
+                        await renderDiagram(contentElement); // Render Main Modal
 
                     } else { // not authenticated
                         await renderSetupPage(contentElement);

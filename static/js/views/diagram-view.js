@@ -72,17 +72,24 @@ const Diagram = {
         let diagramContent = document.getElementById('diagramContent');
         let contentElement = document.getElementById('content');
 
-        // Inserting parent node
-        diagramContent.innerHTML = '' +
-            '<a><div class="node-title">Root Node</div></a>' +
-            '<ul id="root-nodes"></ul>';
+        // Start page loader
+        showAlert(diagramContent, true, '');
 
         // Get OUs data
         let orgUnitsData = await orgUnitsStore();
 
-        // Inserting children nodes
-        for (let i = 0, len = orgUnitsData.length; i < len; i++) {
-            insertChildren(orgUnitsData[i], true);
+        if (orgUnitsData.length > 0) {
+            // Inserting parent node
+            diagramContent.innerHTML = '' +
+                '<a><div class="node-title">Root Org Unit</div></a>' +
+                '<ul id="root-nodes"></ul>';
+
+            // Inserting children nodes
+            for (let i = 0, len = orgUnitsData.length; i < len; i++) {
+                insertChildren(orgUnitsData[i], true);
+            }
+        } else {
+            // TODO: handle diagram content not loaded
         }
 
         diagramContent.addEventListener("click", async (event) => {
