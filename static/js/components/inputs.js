@@ -2,25 +2,25 @@
 Components ONLY for edit policies page
  */
 
-export const textInput = (leafName, value) => {
+export const textInput = (leafName, value, namespace) => {
     return `
         <tr>
             <td  class="child-row">${leafName}</td>
             <td>
-                <input class="editValueInputText" type="text" name="${leafName}" id="${leafName}" value="${value}" required>
+                <input class="editValueInputText policies-inputs" type="text" name="${leafName}" id="${leafName}" value="${value}" data-namespace="${namespace}" required>
             </td>
         </tr>
     `;
 };
 
-export const switchInput = (leafName, isOn) => {
+export const switchInput = (leafName, isOn, namespace) => {
     const isChecked = (isOn === 'true') ? 'checked' : '';
     return `
         <tr>
             <td  class="child-row">${leafName}</td>
             <td>
                 <label class="switch">
-                    <input type="checkbox" id="${leafName}" name="${leafName}" ${isChecked}>
+                    <input class="policies-inputs" type="checkbox" id="${leafName}" name="${leafName}" data-namespace="${namespace}" ${isChecked}>
                     <span class="slider round"></span>
                 </label>
             </td>
@@ -28,12 +28,12 @@ export const switchInput = (leafName, isOn) => {
     `;
 };
 
-export const colorInput = (leafName, value) => {
+export const colorInput = (leafName, value, namespace) => {
     return `
         <tr>
             <td  class="child-row">${leafName}</td>
             <td>
-                <input type="color" id="${leafName}" name="${leafName}" value="${value}">
+                <input class="policies-inputs" type="color" id="${leafName}" name="${leafName}" value="${value}" data-namespace="${namespace}">
             </td>
         </tr>
     `;

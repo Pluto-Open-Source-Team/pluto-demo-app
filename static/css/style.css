@@ -733,10 +733,16 @@ input:checked + .slider:before {
 /* END - Toggle Switch */
 
 .sub-content {
-    margin-top: 100px;
-    width:90%;
+    margin-top: 40px;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.edit-apply-button {
+    width: 16%;
+    margin: 15px auto;
+    display: block;
 }
 
 .child-row {
@@ -744,7 +750,7 @@ input:checked + .slider:before {
 }
 
 .editValueInputText {
-    width:90%;
+    width: 90%;
     padding: 8px;
     border: none;
     background: #f1f1f1;

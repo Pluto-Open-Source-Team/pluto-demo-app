@@ -137,7 +137,7 @@ const googleSettingsSection = () => {
                 <div class="form-row">
                     <div class="full-wdth">
                         <label>Client ID</label>
-                        <input id="clientIDInput" type="text" class="text-field google-settings-input" placeholder="e.g. ...iqlo2.apps.googleusercontent.com" value="525805607141-n10ksop8q0jgtp69lcj2qnjqfi1h89lq.apps.googleusercontent.com">
+                        <input id="clientIDInput" type="text" class="text-field google-settings-input" placeholder="e.g. ...iqlo2.apps.googleusercontent.com" value="">
                     </div>
 
                     <div class="full-wdth clearfix" id="buttonsContainer">
