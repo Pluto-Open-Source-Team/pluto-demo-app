@@ -210,7 +210,6 @@ const SetupTabs = {
                 googleClientId: clientIDInput.value.trim()
             };
 
-            // TODO: add client ID validation process
             if (clientIdValidated && clientIDInput.value.trim()) {
                 try {
                     // Validate client ID

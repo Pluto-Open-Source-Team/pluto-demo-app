@@ -1,3 +1,9 @@
+import {
+    textInput,
+    switchInput,
+    colorInput
+} from "../components/inputs.js";
+
 const EditPolicies = {
     /**
      * Render the component content.
@@ -15,14 +21,13 @@ const EditPolicies = {
             `;
 
             tablesRows += policies[Object.keys(policies)[i]].map(({leafName, value}) => {
-                return `
-                    <tr>
-                        <td  class="child-row">${leafName}</td>
-                        <td>
-                            <input class="editValueInputText" type="text" name="${leafName}" id="${leafName}" value="${value}" required>
-                        </td>
-                    </tr>
-                `;
+                if (value.toString() && (value.toString().toLowerCase() === 'true' || value.toString().toLowerCase() === 'false')) {
+                    return switchInput(leafName, value.toString().toLowerCase());
+                } else if (/^#[0-9A-F]{6}$/i.test(value)) {
+                    return colorInput(leafName, value);
+                } else {
+                    return textInput(leafName, value);
+                }
             }).join('\n');
         }
 

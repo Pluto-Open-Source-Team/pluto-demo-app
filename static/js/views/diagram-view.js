@@ -48,7 +48,7 @@ const Diagram = {
         return `
             <div class="info-note">
                 <p>
-                    <strong>Important Information!</strong>&nbsp;&nbsp;It is recommended to export settings before editing.
+                    <strong>Important Information!</strong>&nbsp;&nbsp;It is recommended to download settings before editing.
                     <br>
                     <br>
                     These namespaces are the one available in this version:<br>

@@ -17,6 +17,7 @@ class AuthService {
     });
 
     // A Hack function to resolve gapi.auth2.init instantiation
+    // TODO: need a permanent fix
     validateClientId = (params) => new Promise((resolve, reject) => {
         fetch(`${AUTH.VALIDATION_URL}${params.client_id}`, {
             method: 'POST'
