@@ -20,7 +20,7 @@ const insertChildren = (node, firstRound) => {
         '<li>' +
             '<div class="dropdown">' +
                 '<a class="dropbtn">' +
-                    '<div class="node-title">' + node.name + '</div>' +
+                    '<div class="node-title" id="nodeNamesId">' + node.name + '</div>' +
                 '</a>' +
                 '<div class="dropdown-content">' +
                     '<a href="#" class="margin-bot margin-top export-policies-button" data-node-id="' + node.id + '">Download Policies</a>' +
@@ -57,7 +57,7 @@ const Diagram = {
                     + <strong>chrome.devices.*</strong>
                 </p>
             </div>
-            <div class="tree">
+            <div class="tree" id="diagramDivId">
                 <ul>
                     <li id="diagramContent"></li>
                 </ul>
@@ -71,6 +71,7 @@ const Diagram = {
     post_render: async () => {
         let diagramContent = document.getElementById('diagramContent');
         let contentElement = document.getElementById('content');
+        let diagramDivId = document.getElementById('diagramDivId');
 
         // Start page loader
         showAlert(diagramContent, true, '');
@@ -81,13 +82,19 @@ const Diagram = {
         if (orgUnitsData.length > 0) {
             // Inserting parent node
             diagramContent.innerHTML = '' +
-                '<a><div class="node-title">Root Org Unit</div></a>' +
+                '<a><div id="rootDiagramNode" class="node-title">Root Org Unit</div></a>' +
                 '<ul id="root-nodes"></ul>';
 
             // Inserting children nodes
             for (let i = 0, len = orgUnitsData.length; i < len; i++) {
                 insertChildren(orgUnitsData[i], true);
             }
+
+            // Scroll diagram to center
+            let nodeRootElement = document.getElementById('rootDiagramNode');
+            // console.log(nodeRootElement.getBoundingClientRect());
+            diagramDivId.scrollLeft = nodeRootElement.getBoundingClientRect().left / 2
+            //diagramDivId.scrollBy(nodeRootPositionX,0);
         } else {
             // TODO: handle diagram content not loaded
         }

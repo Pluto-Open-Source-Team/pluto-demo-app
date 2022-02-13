@@ -213,7 +213,8 @@ const SetupTabs = {
             if (clientIdValidated && clientIDInput.value.trim()) {
                 try {
                     // Validate client ID
-                    let isClientIdValid = await authService.validateClientId({client_id: clientIDInput.value.trim()});
+                    // let isClientIdValid = await authService.validateClientId({client_id: clientIDInput.value.trim()});
+                    let isClientIdValid = true; // TODO: Refresh and pass params every next.
 
                     if (isClientIdValid) {
                         // Save settings to local storage

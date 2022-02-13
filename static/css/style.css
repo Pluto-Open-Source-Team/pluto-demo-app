@@ -434,6 +434,13 @@ label {
 
 /* Diagram - START */
 
+.tree {
+    overflow: scroll;
+    margin-top: 5px;
+    margin-bottom: 55px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
 .tree a[href=""] {
     cursor: default;
 }
@@ -510,6 +517,8 @@ label {
 
 .node-title {
     font-weight: bold;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .node-sub-title {
@@ -542,16 +551,22 @@ label {
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
 
 /* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
 
 .dropbtn {
-    width: 230px;
+    width: 180px;
 }
 /* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #92b1f5;}
+.dropdown:hover .dropbtn {
+    background-color: #92b1f5;
+}
 
 .margin-bot {
     margin-bottom: 10px;

@@ -11,6 +11,7 @@ class AuthService {
             gapi.auth2.init(params).then((res) => {
                 resolve(res);
             }).catch((err) => {
+                console.log(err);
                 reject(err);
             });
         });
@@ -31,8 +32,14 @@ class AuthService {
                     resolve(true);
                 }
             })
-            .catch((err) => {
-                resolve(false); // We need resolve in here to not throw error
+            .catch(async (err) => {
+                let errRes = await err.json();
+
+                if (errRes.error_description === 'The OAuth client was not found.') {
+                    resolve(false);
+                } else {
+                    resolve(true);
+                }
             });
     });
 
