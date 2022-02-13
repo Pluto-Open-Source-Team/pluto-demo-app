@@ -2,25 +2,25 @@
 Components ONLY for edit policies page
  */
 
-export const textInput = (leafName, value, namespace) => {
+export const textInput = (leafName, value, namespace, ouId, valueStructure) => {
     return `
         <tr>
             <td  class="child-row">${leafName}</td>
             <td>
-                <input class="editValueInputText policies-inputs" type="text" name="${leafName}" id="${leafName}" value="${value}" data-namespace="${namespace}" required>
+                <input class="editValueInputText policies-inputs" type="text" name="${leafName}" id="${leafName}" value="${value}" data-namespace="${namespace}" data-ou-id="${ouId}" data-value-structure='${valueStructure}' data-old-value="${value}" required>
             </td>
         </tr>
     `;
 };
 
-export const switchInput = (leafName, isOn, namespace) => {
+export const switchInput = (leafName, isOn, namespace, ouId, valueStructure) => {
     const isChecked = (isOn === 'true') ? 'checked' : '';
     return `
         <tr>
             <td  class="child-row">${leafName}</td>
             <td>
                 <label class="switch">
-                    <input class="policies-inputs" type="checkbox" id="${leafName}" name="${leafName}" data-namespace="${namespace}" ${isChecked}>
+                    <input class="policies-inputs" type="checkbox" id="${leafName}" name="${leafName}" data-namespace="${namespace}" data-ou-id="${ouId}" data-value-structure='${valueStructure}' data-old-value="${isOn}" ${isChecked}>
                     <span class="slider round"></span>
                 </label>
             </td>
@@ -28,12 +28,12 @@ export const switchInput = (leafName, isOn, namespace) => {
     `;
 };
 
-export const colorInput = (leafName, value, namespace) => {
+export const colorInput = (leafName, value, namespace, ouId, valueStructure) => {
     return `
         <tr>
             <td  class="child-row">${leafName}</td>
             <td>
-                <input class="policies-inputs" type="color" id="${leafName}" name="${leafName}" value="${value}" data-namespace="${namespace}">
+                <input class="policies-inputs" type="color" id="${leafName}" name="${leafName}" value="${value}" data-namespace="${namespace}" data-ou-id="${ouId}" data-value-structure='${valueStructure}' data-old-value="${value}">
             </td>
         </tr>
     `;

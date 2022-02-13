@@ -20,13 +20,13 @@ const EditPolicies = {
                 </tr>
             `;
 
-            tablesRows += policies[Object.keys(policies)[i]].map(({leafName, value}) => {
+            tablesRows += policies[Object.keys(policies)[i]].map(({leafName, value, valueStructure, targetResource}) => {
                 if (value.toString() && (value.toString().toLowerCase() === 'true' || value.toString().toLowerCase() === 'false')) {
-                    return switchInput(leafName, value.toString().toLowerCase(), Object.keys(policies)[i]);
+                    return switchInput(leafName, value.toString().toLowerCase(), Object.keys(policies)[i], targetResource, valueStructure);
                 } else if (/^#[0-9A-F]{6}$/i.test(value)) {
-                    return colorInput(leafName, value, Object.keys(policies)[i]);
+                    return colorInput(leafName, value, Object.keys(policies)[i], targetResource, valueStructure);
                 } else {
-                    return textInput(leafName, value, Object.keys(policies)[i]);
+                    return textInput(leafName, value, Object.keys(policies)[i], targetResource, valueStructure);
                 }
             }).join('\n');
         }
@@ -61,24 +61,47 @@ const EditPolicies = {
             for (let i = 0; i < policiesInputs.length; i++) {
                 const inputType = policiesInputs[i].getAttribute('type');
                 const policyNamespace = policiesInputs[i].getAttribute('data-namespace');
+                const _ouId = policiesInputs[i].getAttribute('data-ou-id');
+                const _valueStructure = policiesInputs[i].getAttribute('data-value-structure');
+                const _oldValue = policiesInputs[i].getAttribute('data-old-value');
 
-                if (!(policyNamespace in policiesFromEdit)) {
-                    policiesFromEdit[policyNamespace] = [];
-                }
+                let isChanged = false;
 
                 if (inputType === 'checkbox') {
-                    policiesFromEdit[policyNamespace].push({
-                        leafName: policiesInputs[i].getAttribute('name'),
-                        value: policiesInputs[i].checked
-                    });
+                    if (policiesInputs[i].checked.toString() !== _oldValue.toString()) {
+                        isChanged = true;
+                    }
                 } else {
-                    policiesFromEdit[policyNamespace].push({
-                        leafName: policiesInputs[i].getAttribute('name'),
-                        value: policiesInputs[i].value
-                    });
+                    if (policiesInputs[i].value !== _oldValue) {
+                        isChanged = true;
+                    }
+                }
+
+
+                if (isChanged) {
+                    if (!(policyNamespace in policiesFromEdit)) {
+                        policiesFromEdit[policyNamespace] = [];
+                    }
+
+                    if (inputType === 'checkbox') {
+                        policiesFromEdit[policyNamespace].push({
+                            leafName: policiesInputs[i].getAttribute('name'),
+                            value: policiesInputs[i].checked,
+                            valueStructure: JSON.parse(_valueStructure.replace(/\\/g, '')),
+                            targetResource: _ouId
+                        });
+                    } else {
+                        policiesFromEdit[policyNamespace].push({
+                            leafName: policiesInputs[i].getAttribute('name'),
+                            value: policiesInputs[i].value,
+                            valueStructure: JSON.parse(_valueStructure.replace(/\\/g, '')),
+                            targetResource: _ouId
+                        });
+                    }
                 }
             }
 
+            // Get changed values
             console.log(policiesFromEdit);
         });
     }

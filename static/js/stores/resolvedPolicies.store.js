@@ -22,14 +22,18 @@ export const resolvedPoliciesStore = async (orgUnitId, allSchemaNamespaces, mess
                     for (let k = 0; k < Object.keys(valueObject).length; k++) {
                         formattedPolicies.push({
                             leafName: `${policiesValueObject.policySchema.split('.')[2]}.${Object.keys(valueObject)[k]}`,
-                            value: valueObject[Object.keys(valueObject)[k]]
+                            value: valueObject[Object.keys(valueObject)[k]],
+                            valueStructure: JSON.stringify(policiesValueObject),
+                            targetResource: orgUnitId
                         });
                     }
                 } else {
                     let returnedLeafValue = getLeafValue(valueObject);
                     formattedPolicies.push({
                         leafName: `${policiesValueObject.policySchema.split('.')[2]}.${returnedLeafValue.valueName}`,
-                        value: returnedLeafValue.value
+                        value: returnedLeafValue.value,
+                        valueStructure: JSON.stringify(policiesValueObject),
+                        targetResource: orgUnitId
                     });
                 }
             }
