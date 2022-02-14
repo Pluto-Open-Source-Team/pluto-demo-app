@@ -2,6 +2,7 @@ import {
     previewInput
 } from "../components/inputs.js";
 import { showAlert } from "../components/pageLoader.js";
+import googleApiService from "../services/googleApi.service.js";
 
 const PreviewPolicies = {
     /**
@@ -51,6 +52,7 @@ const PreviewPolicies = {
         applyButton.addEventListener("click", async (event) => {
             // Start page loader
             showAlert(contentElement, true, 'Preparing to apply edited policies...');
+            let alertMessageElement = document.getElementById('loaderSubText');
 
             // Build modify request
             let requests = [];
@@ -78,8 +80,10 @@ const PreviewPolicies = {
             }
 
             // Send batch modify request
-            console.log(requests);
-
+            const batchModifyPoliciesResponse = await googleApiService.batchModifyPolicies(requests, alertMessageElement);
+            console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+            console.log(batchModifyPoliciesResponse);
+            console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
         });
     }
 };

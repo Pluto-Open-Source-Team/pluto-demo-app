@@ -163,6 +163,44 @@ class GoogleApiService {
                 reject(false);
             });
     });
+
+    batchModifyPolicies = (policiesRequests, messageElement) => new Promise(async (resolve, reject) => {
+        const url = `${API.G_CHROME_POLICY_HOST}/v1/customers/${API.G_CUSTOMER}/policies/orgunits:batchModify`;
+        const accessToken = await this.apiInterceptor();
+        const delayIncrement = 1500;
+        let delay = 0;
+        let counter = 1;
+        let requestsCount = policiesRequests.length;
+
+        const requests = policiesRequests.map(_request => {
+            delay += delayIncrement;
+
+            let data = {
+                requests: _request
+            };
+
+            return new Promise(resolve => setTimeout(resolve, delay)).then(() => {
+                messageElement.innerHTML = `<p>Modifying policies batch <strong>${counter} / ${requestsCount}</strong> ...</p>`;
+                counter++;
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: accessToken
+                    },
+                    body: JSON.stringify(data)
+                })
+            });
+        });
+
+        Promise.all(requests)
+            .then(async (response) => {
+                resolve(true);
+            })
+            .catch((err) => {
+                reject(false);
+            });
+    });
 }
 
 const googleApiService = new GoogleApiService();
