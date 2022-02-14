@@ -133,6 +133,7 @@ const googleSettingsSection = () => {
             <form action="#">
                 <h6>Google Settings</h6>
                 <h5>By clicking Save, your Google settings are validated before Login!</h5>
+                <h5>Visit the following link to get your Client ID: <a href="https://console.developers.google.com/apis/credentials">https://console.developers.google.com/apis/credentials</a></h5>
                 <div id="alert-message"></div>
                 <div class="form-row">
                     <div class="full-wdth">

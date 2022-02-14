@@ -52,9 +52,9 @@ const Diagram = {
                     <br>
                     <br>
                     These namespaces are the one available in this version:<br>
-                    + <strong>chrome.users.*</strong>
-                    <br>
-                    + <strong>chrome.devices.*</strong>
+                    + ${POLICIES_NAMESPACES.map((namespace) => {
+                        return '<strong>' + namespace + '</strong> | '
+                    }).join(' ')}
                 </p>
             </div>
             <div class="tree" id="diagramDivId">
