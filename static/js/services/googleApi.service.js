@@ -140,6 +140,29 @@ class GoogleApiService {
                 reject(false);
             });
     });
+
+    getPolicySchemas = () => new Promise(async (resolve, reject) => {
+        const url = `${API.G_CHROME_POLICY_HOST}/v1/customers/${API.G_CUSTOMER}/policySchemas?pageSize=1000`;
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: await this.apiInterceptor()
+            }
+        })
+            .then(async (res) => {
+                let parsedData = await res.json();
+
+                if (parsedData && parsedData.policySchemas) {
+                    resolve(parsedData.policySchemas);
+                } else {
+                    reject(false);
+                }
+            })
+            .catch((err) => {
+                reject(false);
+            });
+    });
 }
 
 const googleApiService = new GoogleApiService();

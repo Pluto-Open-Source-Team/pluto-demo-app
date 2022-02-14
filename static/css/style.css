@@ -754,7 +754,7 @@ input:checked + .slider:before {
     margin-right: auto;
 }
 
-.edit-apply-button {
+.edit-button {
     width: 16%;
     margin: 15px auto;
     display: block;
@@ -776,6 +776,15 @@ input:checked + .slider:before {
     padding: 7px;
     border: none;
     background: #f1f1f1;
+}
+
+.preview-input {
+    padding-right: 25px;
+    background-image: url("/static/img/warning-icon.png");
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color: #f1f1f1;
+    background-size: 20px;
 }
 /* EDIT - END */
 

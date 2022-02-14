@@ -3,6 +3,29 @@ import {
     switchInput,
     colorInput
 } from "../components/inputs.js";
+import PreviewPolicies from "./preview-policies-view.js";
+import { showAlert } from "../components/pageLoader.js";
+import { policySchemasStore } from "../stores/policySchemas.store.js";
+
+const renderPreviewPoliciesPage = async (elem, _policies, ouPathName) => {
+    elem.innerHTML = await PreviewPolicies.render(_policies, ouPathName);
+    await PreviewPolicies.post_render(_policies);
+}
+
+function replacePolicyValue(obj, objKey, newValue) {
+    if (objKey in obj) {
+        obj[objKey] = newValue;
+        return true;
+    } else {
+        for (let i = 0; i < Object.keys(obj).length; i++) {
+            let done = replacePolicyValue(obj[Object.keys(obj)[i]], objKey, newValue);
+
+            if (done === true) {
+                return true;
+            }
+        }
+    }
+}
 
 const EditPolicies = {
     /**
@@ -42,7 +65,7 @@ const EditPolicies = {
                     </table>
                 </div>
                 <div>
-                    <button id="editApplyButtonId" class="edit-apply-button" type="button">Apply</button>
+                    <button id="editPreviewButtonId" class="edit-button" type="button">Preview</button>
                 </div>
             </div>
         `;
@@ -51,11 +74,12 @@ const EditPolicies = {
     /**
      * DOM
      */
-    post_render: async () => {
-        let applyButton = document.getElementById('editApplyButtonId');
+    post_render: async (orgUnitCompletePath) => {
+        let contentElement = document.getElementById('content');
+        let previewButton = document.getElementById('editPreviewButtonId');
         let policiesInputs = document.getElementsByClassName('policies-inputs');
 
-        applyButton.addEventListener("click", async (event) => {
+        previewButton.addEventListener("click", async (event) => {
             let policiesFromEdit = {};
 
             for (let i = 0; i < policiesInputs.length; i++) {
@@ -101,8 +125,30 @@ const EditPolicies = {
                 }
             }
 
-            // Get changed values
-            console.log(policiesFromEdit);
+            // Start page loader
+            showAlert(contentElement, true, 'Preparing to preview edited policies...');
+            let alertMessageElement = document.getElementById('loaderSubText');
+
+            // Replace old value with new one in the structure
+            for (let i = 0; i < Object.keys(policiesFromEdit).length; i++) { // Namespaces
+                for (let j = 0; j < policiesFromEdit[Object.keys(policiesFromEdit)[i]].length; j++) { // policies
+                    let _thisPolicy = policiesFromEdit[Object.keys(policiesFromEdit)[i]][j];
+                    let propertyKeyName = _thisPolicy.leafName.split('.')[_thisPolicy.leafName.split('.').length - 1];
+
+                    replacePolicyValue(_thisPolicy.valueStructure.value, propertyKeyName, _thisPolicy.value);
+                }
+            }
+
+            alertMessageElement.innerHTML = `<p>Checking for associated notice messages...</p>`;
+
+            // Check for associated notice messages
+            let checkedPolicies = await policySchemasStore(policiesFromEdit, alertMessageElement);
+
+            // Stop page loader
+            showAlert(contentElement, false);
+
+            // Render preview page
+            await renderPreviewPoliciesPage(contentElement, checkedPolicies, orgUnitCompletePath);
         });
     }
 };

@@ -7,7 +7,6 @@
         <title>Pluto</title>
 
         <script src="https://apis.google.com/js/platform.js" async defer></script>
-        <script type="module" src="{{ url_for('static', filename='js/policies-edit-script.js') }}"></script>
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
 
@@ -53,7 +52,7 @@
                         <tr>
                             <td class="child-row">chrome.devices.SomeValue</td>
                             <td>
-                                <input class="editValueInputText" type="text" placeholder="Enter stuff" name="testo" id="testo" value="stuff" required>
+                                <input class="editValueInputText preview-input" type="text" placeholder="Enter stuff" name="testo" id="testo" value="stuff" required>
                             </td>
                         </tr>
                         <tr>

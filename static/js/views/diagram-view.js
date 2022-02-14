@@ -37,7 +37,7 @@ const insertChildren = (node, firstRound) => {
 
 const renderEditPoliciesPage = async (elem, _policies, ouPathName) => {
     elem.innerHTML = await EditPolicies.render(_policies, ouPathName);
-    await EditPolicies.post_render();
+    await EditPolicies.post_render(ouPathName);
 };
 
 const Diagram = {

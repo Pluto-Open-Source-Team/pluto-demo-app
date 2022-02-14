@@ -20,12 +20,14 @@ export const resolvedPoliciesStore = async (orgUnitId, allSchemaNamespaces, mess
             if (!POLICIES_BLOCKLIST.includes(policiesValueObject.policySchema)) {
                 if (Object.keys(valueObject).length > 1) {
                     for (let k = 0; k < Object.keys(valueObject).length; k++) {
-                        formattedPolicies.push({
-                            leafName: `${policiesValueObject.policySchema.split('.')[2]}.${Object.keys(valueObject)[k]}`,
-                            value: valueObject[Object.keys(valueObject)[k]],
-                            valueStructure: JSON.stringify(policiesValueObject),
-                            targetResource: orgUnitId
-                        });
+                        if (!Object.keys(valueObject)[k].toLowerCase().includes('acknotice')) {
+                            formattedPolicies.push({
+                                leafName: `${policiesValueObject.policySchema.split('.')[2]}.${Object.keys(valueObject)[k]}`,
+                                value: valueObject[Object.keys(valueObject)[k]],
+                                valueStructure: JSON.stringify(policiesValueObject),
+                                targetResource: orgUnitId
+                            });
+                        }
                     }
                 } else {
                     let returnedLeafValue = getLeafValue(valueObject);

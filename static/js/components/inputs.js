@@ -39,6 +39,18 @@ export const colorInput = (leafName, value, namespace, ouId, valueStructure) => 
     `;
 };
 
+// preview-input CSS class to display icon inside input
+export const previewInput = (leafName, value) => {
+    return `
+        <tr>
+            <td  class="child-row">${leafName}</td>
+            <td>
+                <input class="editValueInputText policies-inputs" type="text" name="${leafName}" id="${leafName}" value="${value}" required readonly>
+            </td>
+        </tr>
+    `;
+};
+
 export const optionsInput = (leafName, value) => {
     /*return `
         <tr>
