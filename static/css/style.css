@@ -845,4 +845,24 @@ ul, #myUL {
 #successfulBehaviour {
     margin-top: 200px;
 }
+
+#errorBehaviour {
+    margin-top: 200px;
+}
+
+#errorBehaviourSubText {
+    background-color: #212121;
+    color: #f1f1f1;
+}
+
+.json-output {
+    padding: 5px;
+    margin: 5px;
+    min-height: 300px;
+}
+.json-string { color: #BE9079; }
+.json-number { color: darkorange; }
+.json-boolean { color: blue; }
+.json-null { color: magenta; }
+.json-key { color: #AADAFA; }
 /* Requests behaviour - END */

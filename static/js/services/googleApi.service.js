@@ -195,10 +195,28 @@ class GoogleApiService {
 
         Promise.all(requests)
             .then(async (response) => {
-                resolve(true);
+                let errorMessage = 'Oops! Something went wrong.';
+                let isError = false;
+
+                for (let i = 0; i < response.length; i++) {
+
+                    if (response[i].status === 200) {
+                        isError = false;
+                    } else {
+                        errorMessage = await response[i].json();
+                        isError = true;
+                        break;
+                    }
+                }
+
+                if (isError) {
+                    resolve(errorMessage);
+                } else {
+                    resolve(true);
+                }
             })
             .catch((err) => {
-                reject(false);
+                resolve(err);
             });
     });
 }

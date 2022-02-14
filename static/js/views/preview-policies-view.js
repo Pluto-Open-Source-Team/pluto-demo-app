@@ -2,7 +2,7 @@ import {
     previewInput
 } from "../components/inputs.js";
 import { showAlert } from "../components/pageLoader.js";
-import { showSuccessful } from "../components/requestsBehaviour.js";
+import {showError, showSuccessful} from "../components/requestsBehaviour.js";
 import googleApiService from "../services/googleApi.service.js";
 
 const PreviewPolicies = {
@@ -82,12 +82,11 @@ const PreviewPolicies = {
 
             // Send batch modify request
             const batchModifyPoliciesResponse = await googleApiService.batchModifyPolicies(requests, alertMessageElement);
-            console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-            console.log(batchModifyPoliciesResponse);
-            console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 
             if (batchModifyPoliciesResponse === true) {
                 showSuccessful(contentElement, true);
+            } else {
+                showError(contentElement, true, batchModifyPoliciesResponse);
             }
         });
     }
