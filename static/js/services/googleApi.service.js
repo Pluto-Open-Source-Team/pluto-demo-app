@@ -94,7 +94,7 @@ class GoogleApiService {
         const url = `${API.G_CHROME_POLICY_HOST}/v1/customers/${API.G_CUSTOMER}/policies:resolve`;
         let accessToken = await this.apiInterceptor();
         let policies = {};
-        const delayIncrement = 1500;
+        const delayIncrement = 1600;
         let delay = 0;
 
         const requests = allSchemaNamespaces.map(namespace => {
@@ -128,9 +128,11 @@ class GoogleApiService {
 
                     if (responseData && responseData.resolvedPolicies && (responseData.resolvedPolicies.length > 0)) {
                         let policySchema = responseData.resolvedPolicies[0].value.policySchema;
-                        let nameSpaceKey = policySchema.substring(0, policySchema.indexOf('.', policySchema.indexOf('.') + 1) + 1);
+                        let pSchemaArr = policySchema.split('.');
+                        pSchemaArr.pop();
+                        let nameSpaceKey = pSchemaArr.join('.') + '.*';
 
-                        policies[`${nameSpaceKey}*`] = responseData.resolvedPolicies;
+                        policies[nameSpaceKey] = responseData.resolvedPolicies;
                     }
                 }
 
