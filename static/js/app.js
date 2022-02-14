@@ -9,6 +9,7 @@ import Footer from './views/footer-view.js'
 import Modal from './views/modal-view.js'
 import authService from "./services/auth.service.js";
 import Diagram from "./views/diagram-view.js";
+import { showSuccessful } from "./components/requestsBehaviour.js";
 
 const renderSetupPage = async (elem) => {
     elem.innerHTML = await SetupTabs.render();

@@ -2,6 +2,7 @@ import {
     previewInput
 } from "../components/inputs.js";
 import { showAlert } from "../components/pageLoader.js";
+import { showSuccessful } from "../components/requestsBehaviour.js";
 import googleApiService from "../services/googleApi.service.js";
 
 const PreviewPolicies = {
@@ -84,6 +85,10 @@ const PreviewPolicies = {
             console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
             console.log(batchModifyPoliciesResponse);
             console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+
+            if (batchModifyPoliciesResponse === true) {
+                showSuccessful(contentElement, true);
+            }
         });
     }
 };

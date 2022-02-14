@@ -828,3 +828,21 @@ ul, #myUL {
     margin-bottom: 100px;
 }
 /* Tree view - END */
+
+/* Requests behaviour - START */
+.icon-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 120px;
+    height: 120px;
+}
+
+#successfulBehaviourSubText {
+    text-align: center;
+}
+
+#successfulBehaviour {
+    margin-top: 200px;
+}
+/* Requests behaviour - END */
