@@ -563,7 +563,7 @@ label {
 }
 
 .dropbtn {
-    width: 180px;
+    max-width: 10em;
 }
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
