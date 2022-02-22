@@ -844,6 +844,10 @@ ul, #myUL {
     text-align: center;
 }
 
+#nothingToModifyBehaviourSubText {
+    text-align: center;
+}
+
 #successfulBehaviour {
     margin-top: 200px;
 }

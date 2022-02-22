@@ -38,6 +38,25 @@ export const showError = (element, show, errorMessage) => {
     }
 };
 
+export const showNothingToModify = (element, show) => {
+    if (show) {
+        element.innerHTML = `
+            <div id="nothingToModifyBehaviour">
+                <img class="icon-image" src="/static/img/nothing.png" alt="nothing-to-modify-icon">
+                <div id="nothingToModifyBehaviourSubText"><p>You didn't Modify any policies!</p></div>
+            </div>
+        `;
+    } else {
+        let nothingToModifyBehaviourContent = document.getElementById("nothingToModifyBehaviour");
+        let nothingToModifyBehaviourSubText = document.getElementById("nothingToModifyBehaviourSubText");
+
+        if (nothingToModifyBehaviourContent) {
+            nothingToModifyBehaviourContent.style.display = "none";
+            nothingToModifyBehaviourSubText.style.display = "none";
+        }
+    }
+};
+
 /*
 https://stackoverflow.com/questions/4810841/pretty-print-json-using-javascript
  */
