@@ -44,7 +44,11 @@ class AuthService {
     });
 
     handleSignIn = () => {
-        gapi.auth2.getAuthInstance().signIn();
+        gapi.auth2.getAuthInstance().signIn().then(() => {
+            // TODO: refactor this
+            localStorage.setItem(STORAGE.ACCESS_TOKEN, JSON.stringify(authService.getAccessToken(gapi.auth2.getAuthInstance())));
+            window.location.reload();
+        });
     };
 
     signedInCallback = (isSignedIn) => {
