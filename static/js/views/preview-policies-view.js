@@ -1,7 +1,7 @@
 import {
     previewInput
 } from "../components/inputs.js";
-import { showAlert } from "../components/pageLoader.js";
+import { showLoader } from "../components/pageLoader.js";
 import {showError, showSuccessful} from "../components/requestsBehaviour.js";
 import googleApiService from "../services/googleApi.service.js";
 
@@ -52,7 +52,7 @@ const PreviewPolicies = {
 
         applyButton.addEventListener("click", async (event) => {
             // Start page loader
-            showAlert(contentElement, true, 'Preparing to apply edited policies...');
+            showLoader(contentElement, true, 'Preparing to apply edited policies...');
             let alertMessageElement = document.getElementById('loaderSubText');
 
             // Build modify request

@@ -1,7 +1,8 @@
 import { orgUnitsStore } from "../stores/orgUnits.store.js";
 import { resolvedPoliciesStore } from "../stores/resolvedPolicies.store.js";
-import { POLICIES_NAMESPACES } from "../config.js";
-import { showAlert } from "../components/pageLoader.js";
+import {ERR, POLICIES_NAMESPACES} from "../config.js";
+import { showLoader } from "../components/pageLoader.js";
+import { showAlert } from "../components/alerts.js";
 import EditPolicies from "./edit-policies-view.js";
 
 const insertChildren = (node, firstRound) => {
@@ -54,6 +55,8 @@ const insertChildren = (node, firstRound) => {
                 '<div class="dropdown-content">' +
                     '<a href="#" class="margin-bot margin-top export-policies-button" data-node-id="' + node.id + '">Download Policies</a>' +
                     '<a href="#" class="margin-bot edit-policies-button" data-node-id="' + node.id + '" data-node-path="' + node.path + '">Edit Policies</a>' +
+                    '<a href="#" class="margin-bot upload-policies-button" data-node-id="' + node.id + '" data-node-path="' + node.path + '">Upload Policies</a>' +
+                    '<input type="file" id="policiesFile" name="policiesFile" accept=".json" style="display: none;">' +
                 '</div>' +
             '</div>' +
             childrenHtml +
@@ -86,6 +89,7 @@ const Diagram = {
                     }).join(' ')}
                 </p>
             </div>
+            <div id="alert-message"></div>
             <div class="tree" id="diagramDivId">
                 <ul>
                     <li id="diagramContent"></li>
@@ -103,7 +107,7 @@ const Diagram = {
         let diagramDivId = document.getElementById('diagramDivId');
 
         // Start page loader
-        showAlert(diagramContent, true, '');
+        showLoader(diagramContent, true, '');
 
         // Get OUs data
         let orgUnitsData = await orgUnitsStore();
@@ -130,12 +134,13 @@ const Diagram = {
 
         diagramContent.addEventListener("click", async (event) => {
 
+            // Edit policies button
             if (event.target && event.target.getAttribute('class') && event.target.getAttribute('class').includes('edit-policies-button')) {
                 let nodeId = event.target.getAttribute('data-node-id');
                 let nodePath = event.target.getAttribute('data-node-path');
 
                 // Start page loader
-                showAlert(contentElement, true, 'Preparing to fetch policies...');
+                showLoader(contentElement, true, 'Preparing to fetch policies...');
 
                 let alertMessageElement = document.getElementById('loaderSubText');
 
@@ -143,38 +148,63 @@ const Diagram = {
                 let policies = await resolvedPoliciesStore(nodeId.substr(nodeId.indexOf(':') + 1), POLICIES_NAMESPACES, alertMessageElement);
 
                 if (policies) {
-                    showAlert(contentElement, false);
+                    showLoader(contentElement, false);
                     await renderEditPoliciesPage(contentElement, policies, nodePath);
                 } else {
                     // TODO: call diagram back -- maybe use Events
                 }
             }
 
+            // Download policies button
             if (event.target && event.target.getAttribute('class') && event.target.getAttribute('class').includes('export-policies-button')) {
                 let nodeId = event.target.getAttribute('data-node-id');
                 let nodePath = event.target.getAttribute('data-node-path');
 
                 // Start page loader
-                showAlert(contentElement, true, 'Preparing to fetch policies...');
+                showLoader(contentElement, true, 'Preparing to fetch policies...');
                 let alertMessageElement = document.getElementById('loaderSubText');
 
                 // Render edit page and process data
                 let policies = await resolvedPoliciesStore(nodeId.substr(nodeId.indexOf(':') + 1), POLICIES_NAMESPACES, alertMessageElement);
 
                 if (policies) {
-                    showAlert(contentElement, false);
+                    showLoader(contentElement, false);
                     downloadObjectAsJson(policies, 'Policies', event.target);
                     window.location.reload();
                 } else {
                     // TODO: call diagram back -- maybe use Events
                 }
             }
+
+            // Upload policies button
+            if (event.target && event.target.getAttribute('class') && event.target.getAttribute('class').includes('upload-policies-button')) {
+                const uploadFileInput = document.getElementById('policiesFile');
+                let nodePath = event.target.getAttribute('data-node-path');
+
+                uploadFileInput.click();
+                uploadFileInput.addEventListener('change', (event) => {
+                    let reader = new FileReader();
+
+                    reader.onload = async (_event) => {
+                        try {
+                            let parsedObj = JSON.parse(_event.target.result);
+                            showLoader(contentElement, false);
+                            await renderEditPoliciesPage(contentElement, parsedObj, nodePath);
+                        } catch (e) {
+                            showAlert('alert-message', ERR.POLICIES_FILE.message, ERR.POLICIES_FILE.color);
+                        }
+                    };
+
+                    reader.readAsText(event.target.files[0]);
+                });
+
+            }
         });
     }
 };
 
 function downloadObjectAsJson(exportObj, exportName, element){
-    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
     element.setAttribute("href",     dataStr);
     element.setAttribute("download", exportName + ".json");
     element.click();

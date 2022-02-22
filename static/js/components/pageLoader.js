@@ -1,4 +1,4 @@
-export const showAlert = (element, show, message) => {
+export const showLoader = (element, show, message) => {
     if (show) {
         element.innerHTML = `
             <div id="page-loader"></div>

@@ -4,7 +4,7 @@ import {
     colorInput
 } from "../components/inputs.js";
 import PreviewPolicies from "./preview-policies-view.js";
-import { showAlert } from "../components/pageLoader.js";
+import { showLoader } from "../components/pageLoader.js";
 import { policySchemasStore } from "../stores/policySchemas.store.js";
 
 const renderPreviewPoliciesPage = async (elem, _policies, ouPathName) => {
@@ -135,7 +135,7 @@ const EditPolicies = {
             }
 
             // Start page loader
-            showAlert(contentElement, true, 'Preparing to preview edited policies...');
+            showLoader(contentElement, true, 'Preparing to preview edited policies...');
             let alertMessageElement = document.getElementById('loaderSubText');
 
             // Replace old value with new one in the structure
@@ -154,7 +154,7 @@ const EditPolicies = {
             let checkedPolicies = await policySchemasStore(policiesFromEdit, alertMessageElement);
 
             // Stop page loader
-            showAlert(contentElement, false);
+            showLoader(contentElement, false);
 
             // Render preview page
             await renderPreviewPoliciesPage(contentElement, checkedPolicies, orgUnitCompletePath);

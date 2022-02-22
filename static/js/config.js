@@ -53,5 +53,9 @@ export const ERR = {
     CLIENT_ID: {
         color: '#f69595',
         message: 'Something went wrong with Client ID. Please correct and try again.'
+    },
+    POLICIES_FILE: {
+        color: '#f69595',
+        message: 'Policies file format is not correct.'
     }
 };
