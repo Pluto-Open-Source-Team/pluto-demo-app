@@ -16,11 +16,40 @@ const insertChildren = (node, firstRound) => {
         childrenHtml = '';
     }
 
+    function wrapNodeName(name) {
+      const MAX_LENGTH = 20;
+      const MAX_LINES = 3;
+
+      function wrapString(s, width) {
+        s = s.trim();
+
+        if (s.length <= width) {
+          return s;
+        }
+
+        let lastSpaceIndex = s.lastIndexOf(" ", width);
+        if (lastSpaceIndex === -1) {
+          lastSpaceIndex = width;
+        }
+
+        const head = s.substring(0, lastSpaceIndex).trimStart();
+        const rest = s.substring(lastSpaceIndex).trimEnd();
+
+        return head + "\n" + wrapString(rest, width);
+      }
+
+      const resultString = wrapString(name, MAX_LENGTH);
+      const resultArray = resultString.split("\n");
+      return resultArray.length > MAX_LINES
+        ? resultArray.slice(0, MAX_LINES).join("<br />") + "..."
+        : resultArray.join('<br />');
+    }
+
     document.getElementById(elementId).innerHTML += '' +
         '<li>' +
             '<div class="dropdown">' +
                 '<a class="dropbtn">' +
-                    '<div class="node-title" id="nodeNamesId">' + node.name + '</div>' +
+                    '<div class="node-title" id="nodeNamesId">' + wrapNodeName(node.name) + '</div>' +
                 '</a>' +
                 '<div class="dropdown-content">' +
                     '<a href="#" class="margin-bot margin-top export-policies-button" data-node-id="' + node.id + '">Download Policies</a>' +
