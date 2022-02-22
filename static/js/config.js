@@ -22,9 +22,24 @@ export const API = {
     G_CUSTOMER: 'my_customer'
 };
 
-export const POLICIES_NAMESPACES = ['chrome.users.*', 'chrome.devices.*', 'chrome.users.apps.*', 'chrome.users.appsconfig.*'];
+export const POLICIES_NAMESPACES = [
+    'chrome.users.*',
+    'chrome.users.apps.*',
+    'chrome.users.appsconfig.*',
+    'chrome.devices.*',
+    'chrome.devices.kiosk.*',
+    'chrome.devices.managedguest.*',
+    'chrome.devices.kiosk.apps.*',
+    'chrome.devices.kiosk.appsconfig.*',
+    'chrome.devices.managedguest.apps.*'
+];
 
-export const POLICIES_BLOCKLIST = ['chrome.users.RemoteAccessHostClientDomainList', 'chrome.users.ManagedBookmarksSetting'];
+export const POLICIES_BLOCKLIST = [
+    'chrome.users.RemoteAccessHostClientDomainList',
+    'chrome.users.ManagedBookmarksSetting',
+    'chrome.users.apps.ManagedConfiguration',
+    'chrome.devices.managedguest.apps.ManagedConfiguration'
+];
 
 export const ERR = {
     GENERAL: {

@@ -506,8 +506,9 @@ label {
     border-radius: 1em 0 0 0;
 }
 .tree ul li a {
-    border: 1px solid #000000;
-    padding: 0.75em;
+    /*border: 1px solid #000000;*/
+    background-color: #ededed;
+    padding: 3px;
     text-decoration: none;
     display: inline-block;
     border-radius: 0.3em;
@@ -517,6 +518,7 @@ label {
 
 .node-title {
     font-weight: bold;
+    font-size: 12px;
     word-wrap: break-word;
     white-space: normal;
 }

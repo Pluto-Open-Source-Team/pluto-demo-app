@@ -120,8 +120,35 @@ const Diagram = {
                     // TODO: call diagram back -- maybe use Events
                 }
             }
+
+            if (event.target && event.target.getAttribute('class') && event.target.getAttribute('class').includes('export-policies-button')) {
+                let nodeId = event.target.getAttribute('data-node-id');
+                let nodePath = event.target.getAttribute('data-node-path');
+
+                // Start page loader
+                showAlert(contentElement, true, 'Preparing to fetch policies...');
+                let alertMessageElement = document.getElementById('loaderSubText');
+
+                // Render edit page and process data
+                let policies = await resolvedPoliciesStore(nodeId.substr(nodeId.indexOf(':') + 1), POLICIES_NAMESPACES, alertMessageElement);
+
+                if (policies) {
+                    showAlert(contentElement, false);
+                    downloadObjectAsJson(policies, 'Policies', event.target);
+                    window.location.reload();
+                } else {
+                    // TODO: call diagram back -- maybe use Events
+                }
+            }
         });
     }
 };
+
+function downloadObjectAsJson(exportObj, exportName, element){
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+    element.setAttribute("href",     dataStr);
+    element.setAttribute("download", exportName + ".json");
+    element.click();
+}
 
 export default Diagram;

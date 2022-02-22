@@ -51,6 +51,7 @@ class AuthService {
         if (isSignedIn) {
             localStorage.setItem(STORAGE.ACCESS_TOKEN, JSON.stringify(this.getAccessToken(gapi.auth2.getAuthInstance())));
 
+            window.location.reload();
             const event = new CustomEvent(EVENTS.USER_AUTHENTICATED, {
                 detail: {
                     isAuthenticated: true

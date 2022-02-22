@@ -37,7 +37,7 @@ const PreviewPolicies = {
                     </table>
                 </div>
                 <div>
-                    <button id="previewApplyButtonId" class="edit-button" type="button">Apply</button>
+                    <button id="previewApplyButtonId" class="edit-button" type="button">Save</button>
                 </div>
             </div>
         `;

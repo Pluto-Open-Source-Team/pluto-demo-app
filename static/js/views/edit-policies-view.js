@@ -107,18 +107,27 @@ const EditPolicies = {
                         policiesFromEdit[policyNamespace] = [];
                     }
 
+                    var myEscapedJSONString = _valueStructure.replace(/\\n/g, "\\n")
+                        .replace(/\\'/g, "\\'")
+                        .replace(/\\"/g, '\\"')
+                        .replace(/\\&/g, "\\&")
+                        .replace(/\\r/g, "\\r")
+                        .replace(/\\t/g, "\\t")
+                        .replace(/\\b/g, "\\b")
+                        .replace(/\\f/g, "\\f");
+
                     if (inputType === 'checkbox') {
                         policiesFromEdit[policyNamespace].push({
                             leafName: policiesInputs[i].getAttribute('name'),
                             value: policiesInputs[i].checked,
-                            valueStructure: JSON.parse(_valueStructure.replace(/\\/g, '')),
+                            valueStructure: JSON.parse(myEscapedJSONString),
                             targetResource: _ouId
                         });
                     } else {
                         policiesFromEdit[policyNamespace].push({
                             leafName: policiesInputs[i].getAttribute('name'),
                             value: policiesInputs[i].value,
-                            valueStructure: JSON.parse(_valueStructure.replace(/\\/g, '')),
+                            valueStructure: JSON.parse(myEscapedJSONString),
                             targetResource: _ouId
                         });
                     }

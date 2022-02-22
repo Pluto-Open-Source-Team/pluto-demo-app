@@ -109,7 +109,10 @@ class GoogleApiService {
             };
 
             return new Promise(resolve => setTimeout(resolve, delay)).then(() => {
-                messageElement.innerHTML = `<p>Fetching <strong>${namespace}</strong> policies...</p>`;
+                if (messageElement) {
+                    messageElement.innerHTML = `<p>Fetching <strong>${namespace}</strong> policies...</p>`;
+                }
+
                 return fetch(url, {
                     method: 'POST',
                     headers: {
