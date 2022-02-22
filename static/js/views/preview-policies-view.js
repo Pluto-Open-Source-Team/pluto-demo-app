@@ -63,7 +63,7 @@ const PreviewPolicies = {
     /**
      * DOM
      */
-    post_render: async (policies) => {
+    post_render: async (policies, orgUnitId) => {
         if (checkIfObjEmpty(policies)) {
             let applyButton = document.getElementById('previewApplyButtonId');
             let contentElement = document.getElementById('content');
@@ -84,7 +84,7 @@ const PreviewPolicies = {
 
                         chunk.push({
                             policyTargetKey: {
-                                targetResource: `orgunits/${_thisPolicy.targetResource}`
+                                targetResource: `orgunits/${orgUnitId.split(':')[1]}`
                             },
                             policyValue: _thisPolicy.valueStructure,
                             updateMask: {

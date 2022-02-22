@@ -67,9 +67,9 @@ const insertChildren = (node, firstRound) => {
     }
 };
 
-const renderEditPoliciesPage = async (elem, _policies, ouPathName) => {
+const renderEditPoliciesPage = async (elem, _policies, ouPathName, ouId) => {
     elem.innerHTML = await EditPolicies.render(_policies, ouPathName);
-    await EditPolicies.post_render(ouPathName);
+    await EditPolicies.post_render(ouPathName, ouId);
 };
 
 const Diagram = {
@@ -149,7 +149,7 @@ const Diagram = {
 
                 if (policies) {
                     showLoader(contentElement, false);
-                    await renderEditPoliciesPage(contentElement, policies, nodePath);
+                    await renderEditPoliciesPage(contentElement, policies, nodePath, nodeId);
                 } else {
                     // TODO: call diagram back -- maybe use Events
                 }
@@ -180,6 +180,7 @@ const Diagram = {
             if (event.target && event.target.getAttribute('class') && event.target.getAttribute('class').includes('upload-policies-button')) {
                 const uploadFileInput = document.getElementById('policiesFile');
                 let nodePath = event.target.getAttribute('data-node-path');
+                let nodeId = event.target.getAttribute('data-node-id');
 
                 uploadFileInput.click();
                 uploadFileInput.addEventListener('change', (event) => {
@@ -189,7 +190,7 @@ const Diagram = {
                         try {
                             let parsedObj = JSON.parse(_event.target.result);
                             showLoader(contentElement, false);
-                            await renderEditPoliciesPage(contentElement, parsedObj, nodePath);
+                            await renderEditPoliciesPage(contentElement, parsedObj, nodePath, nodeId);
                         } catch (e) {
                             showAlert('alert-message', ERR.POLICIES_FILE.message, ERR.POLICIES_FILE.color);
                         }

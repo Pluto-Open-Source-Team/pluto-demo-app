@@ -7,9 +7,9 @@ import PreviewPolicies from "./preview-policies-view.js";
 import { showLoader } from "../components/pageLoader.js";
 import { policySchemasStore } from "../stores/policySchemas.store.js";
 
-const renderPreviewPoliciesPage = async (elem, _policies, ouPathName) => {
+const renderPreviewPoliciesPage = async (elem, _policies, ouPathName, ouId) => {
     elem.innerHTML = await PreviewPolicies.render(_policies, ouPathName);
-    await PreviewPolicies.post_render(_policies);
+    await PreviewPolicies.post_render(_policies, ouId);
 }
 
 function replacePolicyValue(obj, objKey, newValue) {
@@ -74,7 +74,7 @@ const EditPolicies = {
     /**
      * DOM
      */
-    post_render: async (orgUnitCompletePath) => {
+    post_render: async (orgUnitCompletePath, orgUnitId) => {
         let contentElement = document.getElementById('content');
         let previewButton = document.getElementById('editPreviewButtonId');
         let policiesInputs = document.getElementsByClassName('policies-inputs');
@@ -157,7 +157,7 @@ const EditPolicies = {
             showLoader(contentElement, false);
 
             // Render preview page
-            await renderPreviewPoliciesPage(contentElement, checkedPolicies, orgUnitCompletePath);
+            await renderPreviewPoliciesPage(contentElement, checkedPolicies, orgUnitCompletePath, orgUnitId);
         });
     }
 };
