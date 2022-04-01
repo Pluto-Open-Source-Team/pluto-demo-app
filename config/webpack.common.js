@@ -1,6 +1,8 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const DotenvPlugin = require('dotenv-webpack');
+const dotenv = require('dotenv');
 
 const paths = require('./paths');
 
@@ -17,6 +19,13 @@ module.exports = {
 
     // Customize the webpack build process
     plugins: [
+        // Interprets .env files and adds them to the build
+        new DotenvPlugin({
+            safe: true,
+            systemvars: true,
+            allowEmptyValues: false,
+        }),
+
         // Removes/cleans build folders and unused assets when rebuilding
         new CleanWebpackPlugin(),
 
@@ -33,9 +42,10 @@ module.exports = {
                 },
             ],
         }),
+
         // Generates an HTML file from a template
         new HtmlWebpackPlugin({
-            title: 'Pluto',
+            title: dotenv.config().parsed.APP_NAME || 'Pluto',
             favicon: paths.src + '/images/favicon.png',
             template: paths.src + '/template.html', // template file
             filename: 'index.html', // output file

@@ -1,5 +1,6 @@
+console.log(process.env.APP_NAME);
 export const APP = {
-    NAME: 'Chrome Policy Manager',
+    NAME: process.env.APP_NAME || 'Chrome Policy Manager',
 };
 
 export const AUTH = {

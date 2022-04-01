@@ -111,7 +111,7 @@ const generalSection = () => {
                 <div class="form-row forms-margin-top">
                     <div class="form-column">
                         <label>Application Name</label>
-                        <input type="text" id="appNameInputId" class="text-field" placeholder="e.g. Pluto" value="Chrome Policy Manager">
+                        <input type="text" id="appNameInputId" class="text-field" placeholder="e.g. Pluto" value="${APP.NAME}">
                     </div>
                     <div class="form-column"></div>
 
@@ -135,7 +135,7 @@ const googleSettingsSection = () => {
                 <div class="form-row">
                     <div class="full-wdth">
                         <label>Client ID</label>
-                        <input id="clientIDInput" type="text" class="text-field google-settings-input" placeholder="e.g. ...iqlo2.apps.googleusercontent.com" value="">
+                        <input id="clientIDInput" type="text" class="text-field google-settings-input" placeholder="e.g. ...iqlo2.apps.googleusercontent.com" value="${process.env.CLIENT_ID}">
                     </div>
 
                     <div class="full-wdth clearfix" id="buttonsContainer">

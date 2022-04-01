@@ -1,3 +1,8 @@
+
 tasks:
-  - init: pip install -r requirements.txt
-    command: python main.py
+  - init: npm install
+    command: npm start
+
+vscode:
+  extensions:
+    - mikestead.dotenv

@@ -11,7 +11,8 @@
     },
     "plugins": ["prettier"],
     "globals": {
-        "gapi": "readonly"
+        "gapi": "readonly",
+        "process": "readonly"
     },
     "settings": {
         "import/resolver": {
