@@ -1,4 +1,3 @@
-console.log(process.env.APP_NAME);
 export const APP = {
     NAME: process.env.APP_NAME || 'Chrome Policy Manager',
 };
