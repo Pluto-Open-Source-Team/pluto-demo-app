@@ -1,7 +1,9 @@
-
 tasks:
   - init: npm install
     command: npm start
+
+image:
+  file: .gitpod.Dockerfile
 
 vscode:
   extensions:
