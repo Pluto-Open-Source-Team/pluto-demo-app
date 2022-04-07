@@ -1,11 +1,3 @@
-# pluto
-Welcome to the Pluto Chrome Policy Management Tool!
+# Pluto
 
-
-
-## Test pages:
-
-* /
-* /setup
-* /preview
-* /edit
+Welcome to the Chrome Enterprise policy management tool called Pluto!
