@@ -1,4 +1,4 @@
-import { AUTH, STORAGE, EVENTS } from '@/js/config.js';
+import { STORAGE } from '@/js/config.js';
 import SetupTabs from '@/js/views/setup-tabs-view.js';
 import Header from '@/js/views/header-view.js';
 import Footer from '@/js/views/footer-view.js';
@@ -30,60 +30,15 @@ const app = async () => {
     const footerElement = document.getElementById('footer');
     const contentElement = document.getElementById('content');
 
-    let auth2Instance = {};
-
     // Get App Settings
     const appSettings = localStorage.getItem(STORAGE.APP_SETTINGS);
 
-    // Detect if the user signed in
-    document.addEventListener(EVENTS.USER_AUTHENTICATED, async (e) => {
-        if (e.detail && e.detail.isAuthenticated) {
-            /*
-             render protected pages
-             */
-            await renderHeaderNFooter(headerElement, footerElement); // Render Header and Footer
-            // await renderMainModal(contentElement); // Render Main Modal
-            await renderDiagram(contentElement);
-        } else {
-            await renderSetupPage(contentElement);
-        }
-    });
+    // Get Access Token
+    const accessToken = authService.getAccessToken();
 
-    if (appSettings && JSON.parse(appSettings).googleClientId) {
-        authService
-            .initGoogleAuth({
-                client_id: JSON.parse(appSettings).googleClientId,
-                scope: AUTH.SCOPE,
-            })
-            .then(async () => {
-                if (gapi.auth2.getAuthInstance()) {
-                    auth2Instance = gapi.auth2.getAuthInstance();
-
-                    if (auth2Instance.isSignedIn.get()) {
-                        // is authenticated
-                        localStorage.setItem(
-                            STORAGE.ACCESS_TOKEN,
-                            JSON.stringify(authService.getAccessToken(auth2Instance))
-                        );
-
-                        /*
-                        render protected pages
-                         */
-                        await renderHeaderNFooter(headerElement, footerElement); // Render Header and Footer
-                        // await renderMainModal(contentElement); // Render Main Modal
-                        await renderDiagram(contentElement); // Render Main Modal
-                    } else {
-                        // not authenticated
-                        await renderSetupPage(contentElement);
-                    }
-                } else {
-                    // no instance
-                    await renderSetupPage(contentElement);
-                }
-            })
-            .catch(async () => {
-                await renderSetupPage(contentElement);
-            });
+    if (appSettings && accessToken) {
+        await renderHeaderNFooter(headerElement, footerElement); // Render Header and Footer
+        await renderDiagram(contentElement); // Render Main Modal
     } else {
         await renderSetupPage(contentElement);
     }

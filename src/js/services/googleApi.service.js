@@ -1,19 +1,8 @@
 /* eslint-disable no-async-promise-executor */
-import { API, STORAGE } from '../config.js';
+import { API } from '../config.js';
 import authService from '../services/auth.service.js';
 
 class GoogleApiService {
-    async apiInterceptor() {
-        const token = localStorage.getItem(STORAGE.ACCESS_TOKEN);
-
-        if (authService.isValidToken()) {
-            return `Bearer ${JSON.parse(token).accessToken}`;
-        } else {
-            let newToken = await authService.getNewAccessToken();
-            return `Bearer ${newToken}`;
-        }
-    }
-
     retrievesAllOrganizationalUnits() {
         return new Promise(async (resolve, reject) => {
             const url = `${API.G_ADMIN_HOST}/admin/directory/v1/customer/${API.G_CUSTOMER}/orgunits?type=all&prompt=consent&access_type=offline`;
@@ -21,7 +10,7 @@ class GoogleApiService {
             fetch(url, {
                 method: 'GET',
                 headers: {
-                    Authorization: await this.apiInterceptor(),
+                    Authorization: `Bearer ${authService.getAccessToken()}`,
                 },
             })
                 .then(async (res) => {
@@ -30,7 +19,7 @@ class GoogleApiService {
                     if (parsedData && parsedData.organizationUnits) {
                         resolve(parsedData.organizationUnits);
                     } else {
-                        reject(false);
+                        (parsedData.error.code === 401) ? authService.logout() : reject(false);
                     }
                 })
                 .catch(() => {
@@ -40,61 +29,12 @@ class GoogleApiService {
     }
 
     /*
-    Get resolved policies: One request execution
-     */
-    getResolvedPolicies(orgUnitId, schemaNamespace) {
-        return new Promise(async (resolve, reject) => {
-            const url = `${API.G_CHROME_POLICY_HOST}/v1/customers/${API.G_CUSTOMER}/policies:resolve`;
-
-            let policies = [];
-            let isNextPage = false;
-            let data = {
-                policyTargetKey: {
-                    targetResource: `orgunits/${orgUnitId}`,
-                },
-                policySchemaFilter: schemaNamespace,
-                pageSize: 1000,
-            };
-
-            try {
-                do {
-                    const res = await fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: await this.apiInterceptor(),
-                        },
-                        body: JSON.stringify(data),
-                    });
-
-                    let parsedResponse = await res.json();
-
-                    if (parsedResponse && parsedResponse.resolvedPolicies) {
-                        policies.push(...parsedResponse.resolvedPolicies);
-                    }
-
-                    if (parsedResponse && parsedResponse.nextPageToken) {
-                        isNextPage = true;
-                        data.pageToken = parsedResponse.nextPageToken;
-                    } else {
-                        isNextPage = false;
-                    }
-                } while (isNextPage);
-
-                resolve(policies);
-            } catch (err) {
-                reject(false);
-            }
-        });
-    }
-
-    /*
     Get resolved policies: Multiple requests execution
      */
     getResolvedPoliciesPromiseAll(orgUnitId, allSchemaNamespaces, messageElement) {
         return new Promise(async (resolve, reject) => {
             const url = `${API.G_CHROME_POLICY_HOST}/v1/customers/${API.G_CUSTOMER}/policies:resolve`;
-            let accessToken = await this.apiInterceptor();
+            let accessToken = `Bearer ${authService.getAccessToken()}`;
             let policies = {};
             const delayIncrement = 1600;
             let delay = 0;
@@ -128,20 +68,24 @@ class GoogleApiService {
 
             Promise.all(requests)
                 .then(async (response) => {
+
                     for (let i = 0; i < response.length; i++) {
-                        let responseData = await response[i].json();
+                        let responseData = await response[i];
+                        let parsedResponse = responseData.json();
 
                         if (
-                            responseData &&
-                            responseData.resolvedPolicies &&
-                            responseData.resolvedPolicies.length > 0
+                          parsedResponse &&
+                          parsedResponse.resolvedPolicies &&
+                          parsedResponse.resolvedPolicies.length > 0
                         ) {
-                            let policySchema = responseData.resolvedPolicies[0].value.policySchema;
+                            let policySchema = parsedResponse.resolvedPolicies[0].value.policySchema;
                             let pSchemaArr = policySchema.split('.');
                             pSchemaArr.pop();
                             let nameSpaceKey = pSchemaArr.join('.') + '.*';
 
-                            policies[nameSpaceKey] = responseData.resolvedPolicies;
+                            policies[nameSpaceKey] = parsedResponse.resolvedPolicies;
+                        } else {
+                            (responseData.status === 401) ? authService.logout() : reject(false);
                         }
                     }
 
@@ -160,7 +104,7 @@ class GoogleApiService {
             fetch(url, {
                 method: 'GET',
                 headers: {
-                    Authorization: await this.apiInterceptor(),
+                    Authorization: `Bearer ${authService.getAccessToken()}`,
                 },
             })
                 .then(async (res) => {
@@ -169,7 +113,7 @@ class GoogleApiService {
                     if (parsedData && parsedData.policySchemas) {
                         resolve(parsedData.policySchemas);
                     } else {
-                        reject(false);
+                        (parsedData.error.code === 401) ? authService.logout() : reject(false);
                     }
                 })
                 .catch(() => {
@@ -181,7 +125,7 @@ class GoogleApiService {
     batchModifyPolicies(policiesRequests, messageElement) {
         return new Promise(async (resolve) => {
             const url = `${API.G_CHROME_POLICY_HOST}/v1/customers/${API.G_CUSTOMER}/policies/orgunits:batchModify`;
-            const accessToken = await this.apiInterceptor();
+            const accessToken = `Bearer ${authService.getAccessToken()}`;
             const delayIncrement = 1500;
             let delay = 0;
             let counter = 1;
@@ -216,6 +160,8 @@ class GoogleApiService {
                     for (let i = 0; i < response.length; i++) {
                         if (response[i].status === 200) {
                             isError = false;
+                        } else if (response[i].status === 401) {
+                            authService.logout();
                         } else {
                             errorMessage = await response[i].json();
                             isError = true;

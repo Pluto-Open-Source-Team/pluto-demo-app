@@ -1,116 +1,51 @@
-import { AUTH, EVENTS, STORAGE } from '../config.js';
+import { AUTH, STORAGE } from '../config.js';
 
 class AuthService {
-    initGoogleAuth(params) {
-        return new Promise((resolve, reject) => {
-            gapi.load('auth2', () => {
-                gapi.auth2
-                    .init(params)
-                    .then((res) => {
-                        resolve(res);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        reject(err);
-                    });
-            });
+    initGoogleAuth() {
+        return window.google.accounts.oauth2.initTokenClient({
+            client_id: this.getClientId(),
+            scope: AUTH.SCOPE,
+            callback: this.signedInCallback,
+            prompt: 'consent'
         });
     }
 
-    // A Hack function to resolve gapi.auth2.init instantiation
-    // TODO: need a permanent fix
-    validateClientId(params) {
-        return new Promise((resolve) => {
-            fetch(`${AUTH.VALIDATION_URL}${params.client_id}`, {
-                method: 'POST',
-            })
-                .then(async (res) => {
-                    let parsedData = await res.json();
-
-                    if (parsedData.error_description === 'The OAuth client was not found.') {
-                        resolve(false);
-                    } else {
-                        resolve(true);
-                    }
-                })
-                .catch(async (err) => {
-                    let errRes = await err.json();
-
-                    if (errRes.error_description === 'The OAuth client was not found.') {
-                        resolve(false);
-                    } else {
-                        resolve(true);
-                    }
-                });
-        });
-    }
-
-    handleSignIn() {
-        return gapi.auth2
-            .getAuthInstance()
-            .signIn()
-            .then(() => {
-                // TODO: refactor this
-                localStorage.setItem(
-                    STORAGE.ACCESS_TOKEN,
-                    JSON.stringify(authService.getAccessToken(gapi.auth2.getAuthInstance()))
-                );
-                window.location.reload();
-            });
-    }
-
-    signedInCallback(isSignedIn) {
-        if (isSignedIn) {
-            localStorage.setItem(
-                STORAGE.ACCESS_TOKEN,
-                JSON.stringify(this.getAccessToken(gapi.auth2.getAuthInstance()))
-            );
-
+    /**
+     * {
+     *     "access_token": "",
+     *     "token_type": "Bearer",
+     *     "expires_in": 3599,
+     *     "scope": "",
+     *     "authuser": "0",
+     *     "hd": "example.com",
+     *     "prompt": "none"
+     * }
+     */
+    signedInCallback(res) {
+        if (res.access_token) {
+            localStorage.setItem(STORAGE.ACCESS_TOKEN, res.access_token);
             window.location.reload();
-            const event = new CustomEvent(EVENTS.USER_AUTHENTICATED, {
-                detail: {
-                    isAuthenticated: true,
-                },
-            });
-            document.dispatchEvent(event);
         }
     }
 
-    getAccessToken(auth2) {
-        return {
-            accessToken: auth2.currentUser.get().getAuthResponse().access_token,
-            expiresAt: auth2.currentUser.get().getAuthResponse().expires_at,
-        };
-    }
+    getClientId() {
+        // Get App Settings
+        const appSettings = localStorage.getItem(STORAGE.APP_SETTINGS);
 
-    isValidToken() {
-        let token = localStorage.getItem(STORAGE.ACCESS_TOKEN);
-
-        if (!token) {
-            return false;
+        if (appSettings && JSON.parse(appSettings).googleClientId) {
+            return JSON.parse(appSettings).googleClientId;
         }
 
-        const currentTime = Date.now() / 1000;
-
-        return JSON.parse(token).expiresAt > currentTime;
+        return null;
     }
 
-    async getNewAccessToken() {
-        if (gapi.auth2.getAuthInstance()) {
-            // Get Token
-            let newToken = await gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse();
+    getAccessToken() {
+        return localStorage.getItem(STORAGE.ACCESS_TOKEN);
+    }
 
-            // Save token to local storage
-            localStorage.setItem(
-                STORAGE.ACCESS_TOKEN,
-                JSON.stringify(this.getAccessToken(gapi.auth2.getAuthInstance()))
-            );
-
-            return newToken.access_token;
-        } else {
-            // TODO: remove localstorage and logout
-            return false;
-        }
+    logout() {
+        localStorage.removeItem(STORAGE.ACCESS_TOKEN);
+        window.location.reload();
     }
 }
 

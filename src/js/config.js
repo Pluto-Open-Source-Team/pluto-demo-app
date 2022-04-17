@@ -13,10 +13,6 @@ export const STORAGE = {
     ACCESS_TOKEN: 'ACCESS_TOKEN',
 };
 
-export const EVENTS = {
-    USER_AUTHENTICATED: 'USER_AUTHENTICATED',
-};
-
 export const API = {
     G_ADMIN_HOST: 'https://admin.googleapis.com',
     G_CHROME_POLICY_HOST: 'https://chromepolicy.googleapis.com',

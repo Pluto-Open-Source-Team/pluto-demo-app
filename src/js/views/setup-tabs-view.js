@@ -1,6 +1,6 @@
 import { showAlert } from '../components/alerts.js';
 import { controlTabulation, handleButtonAnimation, handleSignInButton } from '../components/index.js';
-import { APP, AUTH, ERR, STORAGE } from '../config.js';
+import { APP, ERR, STORAGE } from '../config.js';
 import authService from '../services/auth.service.js';
 
 const TABS_NAMES = [
@@ -188,7 +188,6 @@ const SetupTabs = {
         }
 
         saveButton.addEventListener('click', async () => {
-            let clientIdValidated = true;
             let appSettings = {};
 
             // Launch animation
@@ -208,45 +207,31 @@ const SetupTabs = {
                 googleClientId: clientIDInput.value.trim(),
             };
 
-            if (clientIdValidated && clientIDInput.value.trim()) {
-                try {
-                    // Validate client ID
-                    // let isClientIdValid = await authService.validateClientId({client_id: clientIDInput.value.trim()});
-                    let isClientIdValid = true; // TODO: Refresh and pass params every next.
+            if (clientIDInput.value.trim()) {
+                // Save settings to local storage
+                localStorage.setItem(STORAGE.APP_SETTINGS, JSON.stringify(appSettings));
 
-                    if (isClientIdValid) {
-                        // Save settings to local storage
-                        localStorage.setItem(STORAGE.APP_SETTINGS, JSON.stringify(appSettings));
+                // Load Google client library
+                const script = document.createElement('script');
+                script.src = "https://accounts.google.com/gsi/client";
+                script.onload = () => {
+                    handleSignInButton(buttonsContainer, true); // Display Sign In button
+                };
+                script.async = true;
+                script.defer = true;
+                script.id = "google-client-script";
+                document.querySelector('body')?.appendChild(script);
 
-                        // Initialize Google Auth
-                        await authService.initGoogleAuth({
-                            client_id: clientIDInput.value.trim(),
-                            scope: AUTH.SCOPE,
-                        });
-
-                        // Display Sign In button
-                        handleSignInButton(buttonsContainer, true);
-
-                        // Add listener to sign in
-                        gapi.auth2.getAuthInstance().isSignedIn.listen(authService.signedInCallback);
-                    } else {
-                        handleButtonAnimation('saveButton', false, false);
-                        showAlert('alert-message', ERR.CLIENT_ID.message, ERR.CLIENT_ID.color);
-                    }
-                } catch (e) {
-                    handleButtonAnimation('saveButton', false, false);
-                    console.log(e);
-                    showAlert('alert-message', ERR.GENERAL.message, ERR.GENERAL.color);
-                }
             } else {
                 handleButtonAnimation('saveButton', false, false);
                 showAlert('alert-message', ERR.FIELD_REQUIRED.message, ERR.FIELD_REQUIRED.color);
             }
         });
 
-        buttonsContainer.addEventListener('click', (event) => {
+        buttonsContainer.addEventListener('click', async (event) => {
             if (event.target && event.target.id === 'signInWithGoogle') {
-                authService.handleSignIn();
+                const googleClient = authService.initGoogleAuth(); // Initialize Google Auth
+                googleClient.requestAccessToken();
             }
         });
     },
