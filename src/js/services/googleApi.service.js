@@ -19,7 +19,9 @@ class GoogleApiService {
                     if (parsedData && parsedData.organizationUnits) {
                         resolve(parsedData.organizationUnits);
                     } else {
-                        (parsedData.error.code === 401) ? authService.logout() : reject(false);
+                        if (parsedData.error.code === 401) {
+                            authService.logout();
+                        }
                     }
                 })
                 .catch(() => {
@@ -71,7 +73,7 @@ class GoogleApiService {
 
                     for (let i = 0; i < response.length; i++) {
                         let responseData = await response[i];
-                        let parsedResponse = responseData.json();
+                        let parsedResponse = await responseData.json();
 
                         if (
                           parsedResponse &&
@@ -85,7 +87,9 @@ class GoogleApiService {
 
                             policies[nameSpaceKey] = parsedResponse.resolvedPolicies;
                         } else {
-                            (responseData.status === 401) ? authService.logout() : reject(false);
+                            if (responseData.status === 401) {
+                                authService.logout();
+                            }
                         }
                     }
 
@@ -113,7 +117,9 @@ class GoogleApiService {
                     if (parsedData && parsedData.policySchemas) {
                         resolve(parsedData.policySchemas);
                     } else {
-                        (parsedData.error.code === 401) ? authService.logout() : reject(false);
+                        if (parsedData.error.code === 401) {
+                            authService.logout();
+                        }
                     }
                 })
                 .catch(() => {
