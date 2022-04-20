@@ -2,12 +2,12 @@
 Components ONLY for edit policies page
  */
 
-export const textInput = (leafName, value, namespace, ouId, valueStructure) => {
+export const textInput = (leafName, value, oldValue, namespace, ouId, valueStructure) => {
     return `
         <tr>
             <td  class="child-row">${leafName}</td>
             <td>
-                <input class="editValueInputText policies-inputs" type="text" name="${leafName}" id="${leafName}" value="${value}" data-namespace="${namespace}" data-ou-id="${ouId}" data-value-structure='${valueStructure}' data-old-value="${value}" required>
+                <input class="editValueInputText policies-inputs" type="text" name="${leafName}" id="${leafName}" value="${value}" data-namespace="${namespace}" data-ou-id="${ouId}" data-value-structure='${valueStructure}' data-old-value="${oldValue}" required>
             </td>
         </tr>
     `;

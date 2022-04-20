@@ -1,4 +1,4 @@
-import { colorInput, switchInput, textInput } from '../components/inputs.js';
+import { textInput } from '../components/inputs.js';
 import { showLoader } from '../components/pageLoader.js';
 import { policySchemasStore } from '../stores/policySchemas.store.js';
 import PreviewPolicies from './preview-policies-view.js';
@@ -27,7 +27,7 @@ const EditPolicies = {
     /**
      * Render the component content.
      */
-    render: async (policies, orgUnitCompletePath) => {
+    render: async (policies, orgUnitCompletePath, currentPolicies) => {
         let tablesRows = '';
 
         for (let i = 0; i < Object.keys(policies).length; i++) {
@@ -40,37 +40,50 @@ const EditPolicies = {
 
             tablesRows += policies[Object.keys(policies)[i]]
                 .map(({ leafName, value, valueStructure, targetResource }) => {
-                    if (
-                        value.toString() &&
-                        (value.toString().toLowerCase() === 'true' ||
-                            value.toString().toLowerCase() === 'false')
-                    ) {
-                        return switchInput(
-                            leafName,
-                            value.toString().toLowerCase(),
-                            Object.keys(policies)[i],
-                            targetResource,
-                            valueStructure
-                        );
-                    } else if (/^#[0-9A-F]{6}$/i.test(value)) {
-                        return colorInput(
-                            leafName,
-                            value,
-                            Object.keys(policies)[i],
-                            targetResource,
-                            valueStructure
-                        );
-                    } else {
-                        return textInput(
-                            leafName,
-                            value,
-                            Object.keys(policies)[i],
-                            targetResource,
-                            valueStructure
-                        );
+                    let oldValue = value;
+
+                    if (currentPolicies) {
+                        const cPoliciesArr = currentPolicies[Object.keys(policies)[i]];
+                        for (let j = 0; j < cPoliciesArr.length; j++) {
+                            if (leafName === cPoliciesArr[j].leafName) {
+                                oldValue = cPoliciesArr[j].value;
+                                break;
+                            }
+                        }
                     }
+
+                    return textInput(
+                      leafName,
+                      value, // new value
+                      oldValue, // old value
+                      Object.keys(policies)[i],
+                      targetResource,
+                      valueStructure
+                    );
                 })
                 .join('\n');
+
+            /**
+             * Re-facto this code block
+             */
+            if (currentPolicies) {
+                const diffResults = policies[Object.keys(policies)[i]].filter(({ leafName: leaf1 }) => {
+                    return !currentPolicies[Object.keys(policies)[i]].some(({ leafName: leaf2 }) => leaf2 === leaf1);
+                });
+
+                tablesRows += diffResults
+                  .map(({ leafName, value, valueStructure, targetResource }) => {
+                      return textInput(
+                        leafName,
+                        value, // new value
+                        '', // old value
+                        Object.keys(policies)[i],
+                        targetResource,
+                        valueStructure
+                      );
+                  })
+                  .join('\n');
+            }
         }
 
         return `
@@ -102,7 +115,6 @@ const EditPolicies = {
             let policiesFromEdit = {};
 
             for (let i = 0; i < policiesInputs.length; i++) {
-                const inputType = policiesInputs[i].getAttribute('type');
                 const policyNamespace = policiesInputs[i].getAttribute('data-namespace');
                 const _ouId = policiesInputs[i].getAttribute('data-ou-id');
                 const _valueStructure = policiesInputs[i].getAttribute('data-value-structure');
@@ -110,14 +122,8 @@ const EditPolicies = {
 
                 let isChanged = false;
 
-                if (inputType === 'checkbox') {
-                    if (policiesInputs[i].checked.toString() !== _oldValue.toString()) {
-                        isChanged = true;
-                    }
-                } else {
-                    if (policiesInputs[i].value !== _oldValue) {
-                        isChanged = true;
-                    }
+                if (policiesInputs[i].value !== _oldValue) {
+                    isChanged = true;
                 }
 
                 if (isChanged) {
@@ -125,7 +131,7 @@ const EditPolicies = {
                         policiesFromEdit[policyNamespace] = [];
                     }
 
-                    var myEscapedJSONString = _valueStructure
+                    const myEscapedJSONString = _valueStructure
                         .replace(/\\n/g, '\\n')
                         .replace(/\\'/g, "\\'")
                         .replace(/\\"/g, '\\"')
@@ -135,21 +141,12 @@ const EditPolicies = {
                         .replace(/\\b/g, '\\b')
                         .replace(/\\f/g, '\\f');
 
-                    if (inputType === 'checkbox') {
-                        policiesFromEdit[policyNamespace].push({
-                            leafName: policiesInputs[i].getAttribute('name'),
-                            value: policiesInputs[i].checked,
-                            valueStructure: JSON.parse(myEscapedJSONString),
-                            targetResource: _ouId,
-                        });
-                    } else {
-                        policiesFromEdit[policyNamespace].push({
-                            leafName: policiesInputs[i].getAttribute('name'),
-                            value: policiesInputs[i].value,
-                            valueStructure: JSON.parse(myEscapedJSONString),
-                            targetResource: _ouId,
-                        });
-                    }
+                    policiesFromEdit[policyNamespace].push({
+                        leafName: policiesInputs[i].getAttribute('name'),
+                        value: policiesInputs[i].value,
+                        valueStructure: JSON.parse(myEscapedJSONString),
+                        targetResource: _ouId,
+                    });
                 }
             }
 

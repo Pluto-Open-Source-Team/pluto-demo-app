@@ -80,8 +80,8 @@ const insertChildren = (node, firstRound) => {
     }
 };
 
-const renderEditPoliciesPage = async (elem, _policies, ouPathName, ouId) => {
-    elem.innerHTML = await EditPolicies.render(_policies, ouPathName);
+const renderEditPoliciesPage = async (elem, currentPolicies, newPolicies, ouPathName, ouId) => {
+    elem.innerHTML = await EditPolicies.render(newPolicies, ouPathName, currentPolicies);
     await EditPolicies.post_render(ouPathName, ouId);
 };
 
@@ -170,7 +170,7 @@ const Diagram = {
 
                 if (policies) {
                     showLoader(contentElement, false);
-                    await renderEditPoliciesPage(contentElement, policies, nodePath, nodeId);
+                    await renderEditPoliciesPage(contentElement, null, policies, nodePath, nodeId);
                 } else {
                     // TODO: call diagram back -- maybe use Events
                 }
@@ -220,9 +220,21 @@ const Diagram = {
 
                     reader.onload = async (_event) => {
                         try {
-                            let parsedObj = JSON.parse(_event.target.result);
+                            // Start page loader
+                            showLoader(contentElement, true, 'Preparing to fetch policies...');
+
+                            let newParsedPolicies = JSON.parse(_event.target.result);
+
+                            // Download current policies
+                            const cPolicies = await resolvedPoliciesStore(
+                              nodeId.substr(nodeId.indexOf(':') + 1),
+                              Object.keys(newParsedPolicies),
+                              null
+                            );
+
+
                             showLoader(contentElement, false);
-                            await renderEditPoliciesPage(contentElement, parsedObj, nodePath, nodeId);
+                            await renderEditPoliciesPage(contentElement, cPolicies, newParsedPolicies, nodePath, nodeId);
                         } catch (e) {
                             showAlert('alert-message', ERR.POLICIES_FILE.message, ERR.POLICIES_FILE.color);
                         }
