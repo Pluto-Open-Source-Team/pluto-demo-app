@@ -2,7 +2,7 @@ export const showSuccessful = (element, show) => {
     if (show) {
         element.innerHTML = `
             <div id="successfulBehaviour">
-                <img class="icon-image" src="@/images/successful-icon.png" alt="successful-icon">
+                <img class="icon-image" src="@images/successful-icon.png" alt="successful-icon">
                 <div id="successfulBehaviourSubText"><p>Policies are updated successfully!</p></div>
             </div>
         `;
