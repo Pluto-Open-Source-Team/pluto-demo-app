@@ -897,3 +897,22 @@ ul,
     color: #aadafa;
 }
 /* Requests behaviour - END */
+
+/*
+PP - TOS
+ */
+
+.centerTextTitle {
+    text-align: center;
+}
+.formatArticle {
+    margin: auto;
+    width: 60%;
+    text-align: left;
+}
+.articleList {
+    text-align: left;
+}
+.articleList li {
+    list-style-type: square;
+}

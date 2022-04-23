@@ -50,6 +50,20 @@ module.exports = {
             template: paths.src + '/template.html', // template file
             filename: 'index.html', // output file
         }),
+
+        new HtmlWebpackPlugin({
+            title: 'Privacy Policy | Pluto',
+            favicon: paths.src + '/images/favicon.png',
+            template: paths.src + '/privacy-policy.html', // template file
+            filename: 'privacy.html', // output file
+        }),
+
+        new HtmlWebpackPlugin({
+            title: 'Terms & Conditions | Pluto',
+            favicon: paths.src + '/images/favicon.png',
+            template: paths.src + '/tos.html', // template file
+            filename: 'tos.html', // output file
+        }),
     ],
 
     // Determine how modules within the project are treated
