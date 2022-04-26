@@ -48,6 +48,13 @@ module.exports = {
             title: dotenv.config().parsed.APP_NAME || 'Pluto',
             favicon: paths.src + '/images/favicon.png',
             template: paths.src + '/template.html', // template file
+            filename: 'app.html', // output file
+        }),
+
+        new HtmlWebpackPlugin({
+            title: dotenv.config().parsed.APP_NAME || 'Pluto',
+            favicon: paths.src + '/images/favicon.png',
+            template: paths.src + '/homepage.html', // template file
             filename: 'index.html', // output file
         }),
 

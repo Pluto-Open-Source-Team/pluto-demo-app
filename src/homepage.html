@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+</head>
+
+<body>
+    <header class="header" id="header"> <a href="/" class="main-logo-link">
+            <div class="main-logo-holder main-logo">
+                <h3>
+                    <%= htmlWebpackPlugin.options.title %> <span class="sub-title-main-logo">By Pluto</span>
+                </h3>
+            </div>
+        </a>
+    </header>
+
+    <h2 class="c1"><span class="c0">Welcome to the Chrome Policy Manager demo app!</span></h2>
+    <p class="c1"><span class="c0">This app demonstrates the features of the Chrome Policy Manager Open Source project:
+            https://github.com/jonsmallhill/pluto</span></p>
+    <h4 class="c1"><span class="c0">Regarding your user data:</span></h4>
+    <p class="c1"><span class="c0">This app will visualise your organisational units from the Google Admin Console
+            (using the Directory API directory.orgunit.readonly): </span></p>
+    <p class="c1"><span
+            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 624.00px; height: 429.33px;"><img
+                alt="organizational units - overview" src="/assets/ou-overview.jpg"
+                style="width: 624.00px; height: 429.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                title=""></span></p>
+
+    <p class="c1"><span class="c0">This tool simplifies the way how Chromebook Administrators can manage their policies
+            and offers three main features: Importing, Exporting and Editing existing policies. Therefore the app will
+            read policies (.management.policy.readonly) but also modify/write policies (.management.policy.readonly).
+            There's no other way to use a more limited scope for this use case.</span></p>
+    <h4 class="c1"><span class="c0">These API namespaces are the available in this version:</span></h4>
+    <p class="c1"><span class="c0" style="color: #3498db;">+ chrome.users.* | chrome.users.apps.* |
+            chrome.users.appsconfig.* | chrome.devices.* | chrome.devices.kiosk.* | chrome.devices.managedguest.* |
+            chrome.devices.kiosk.apps.* | chrome.devices.kiosk.appsconfig.* | chrome.devices.managedguest.apps.*
+            |</span></p>
+    <p class="c1"><span class="c0">All API calls will happen between your Chrome tab and the Google APIs. There's no
+            middleware, framework or any 3rd party library involved - all requests happen in the browser sandbox. This
+            app can be used with your own client ID if you like. All data (access token + app settings) will be stored
+            in the local storage of the browser. Therefore, no data can be stored anywhere else.</span></p>
+    <p class="c1">&nbsp;</p>
+    <h1 style="text-align: center;"><a href="/app.html">Click here to install</a></h1>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <footer id="footer" class="footer">
+        <p><span class="footer-part-1">&copy; 2022 Pluto. All Rights Reserved</span><span class="footer-part-2"> <a
+                    href="/privacy.html">Privacy Policy</a> | <a href="/tos.html">Terms of Service</a></span></p>
+    </footer>
+</body>
+
+</html>
