@@ -7,21 +7,26 @@ import Diagram from '@/js/views/diagram-view.js';
 import '@/styles/style.css';
 
 const renderSetupPage = async (elem) => {
-    elem.innerHTML = await SetupTabs.render();
-    await SetupTabs.post_render();
+    if (elem) {
+        elem.innerHTML = await SetupTabs.render();
+        await SetupTabs.post_render();
+    }
 };
 
 const renderHeaderNFooter = async (headerElem, footerElem) => {
-    headerElem.innerHTML = await Header.render();
-    await Header.post_render();
-
-    footerElem.innerHTML = await Footer.render();
-    await Footer.post_render();
+    if (headerElem && footerElem) {
+        headerElem.innerHTML = await Header.render();
+        await Header.post_render();
+        footerElem.innerHTML = await Footer.render();
+        await Footer.post_render();
+    }
 };
 
 const renderDiagram = async (elem) => {
-    elem.innerHTML = await Diagram.render();
-    await Diagram.post_render();
+    if (elem) {
+        elem.innerHTML = await Diagram.render();
+        await Diagram.post_render();
+    }
 };
 
 const app = async () => {
