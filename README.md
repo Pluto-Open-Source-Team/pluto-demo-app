@@ -1,6 +1,6 @@
 # Pluto
 
-Welcome to the Chrome Enterprise policy management tool called Pluto!
+Welcome to the free Chrome Policy Manager! This tool is being developed and maintained by the Pluto open source team
 
 ## Installation
 
