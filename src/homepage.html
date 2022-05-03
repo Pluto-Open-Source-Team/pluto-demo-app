@@ -14,6 +14,7 @@
             margin: 0px;
             color: #000000;
         }
+
         .button {
             border-radius: 0;
         }
@@ -22,10 +23,13 @@
             outline: 1px dotted;
             outline: 5px auto -webkit-focus-ring-color;
         }
+
         .banner {
             background-color: #f7f8fa;
             text-align: center;
+            width: 100%;
         }
+
         .container {
             width: 100%;
             padding-right: 15px;
@@ -33,19 +37,24 @@
             margin-right: auto;
             margin-left: auto;
         }
+
         .font-weight-semibold {
             font-weight: 600;
         }
+
         .font-weight-normal {
             font-weight: 400 !important;
         }
+
         .text-muted {
             color: #6e6e6e !important;
         }
+
         .pb-3,
         .py-3 {
             padding-bottom: 1rem !important;
         }
+
         .btn {
             font-size: 0.875rem;
             font-family: 'Poppins', sans-serif;
@@ -53,51 +62,62 @@
             outline: none;
             width: 250px;
         }
+
         .btn-opacity-light {
             color: #fc7341;
             background-color: #fec4af;
             border: 2px solid transparent;
             transition: all 0.5s ease-in-out;
         }
+
         .btn-opacity-light:hover {
             color: #fc7341;
             background-color: white;
             border: 2px solid #fc7341;
         }
+
         .mr-1,
         .mx-1 {
             margin-right: 0.25rem !important;
         }
+
         .btn-opacity-success {
             color: #5ed6b3;
             background-color: #b7eddd;
             border: 2px solid transparent;
             transition: all 0.5s ease-in-out;
         }
+
         .btn-opacity-success:hover {
             color: #5ed6b3;
             background-color: white;
             border: 2px solid #5ed6b3;
         }
+
         .ml-1,
         .mx-1 {
             margin-left: 0.25rem !important;
         }
+
         .img-fluid {
             max-width: 100%;
             height: auto;
         }
+
         .content-wrapper {
             padding: 27px 0px;
         }
+
         .section1 .content-header {
             padding: 8px 0px 0px 0px;
             text-align: center;
         }
+
         .section2 .content-header {
             padding: 8px 0px 0px 0px;
             text-align: center;
         }
+
         .container-gr {
             background-color: #f7f8fa;
             width: 100%;
@@ -106,15 +126,29 @@
             margin-right: auto;
             margin-left: auto;
         }
+
         .section-subtitle {
             font-weight: normal;
             font-size: 1.2em;
         }
+
         .imgContainer {
             text-align: center;
         }
+
         .text-center {
             text-align: center;
+        }
+
+        section {
+            max-width: 50%;
+            margin: auto;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     </style>
 </head>
@@ -129,67 +163,76 @@
         </a>
     </header>
 
-    <div class="banner" >
-        <div class="container">
-            <h1 class="font-weight-semibold">Welcome to the <br> Chrome Policy Manager demo app!</h1>
-            <h4 class="font-weight-normal text-muted pb-3">This app demonstrates the features of the Chrome Policy Manager Open Source project: <a href="https://github.com/jonsmallhill/pluto">Pluto</a></h4>
-            <div>
-                <a class="btn btn-opacity-success ml-1 button" href="/app.html">Get started</a>
-                <br>
-                <br>
-            </div>
-        </div>
-    </div>
-
-    <div class="content-wrapper">
-        <div class="container">
-            <section class="section1">
-                <div class="content-header">
-                    <h2>Regarding your user data</h2>
-                    <h4 class="section-subtitle text-muted">
-                        This app will visualise your organisational units from the Google Admin Console
-                        (using the Directory API directory.orgunit.readonly).
-                    </h4>
-                </div>
+    <main>
+        <div class="banner">
+            <div class="container">
+                <h1 class="font-weight-semibold">Welcome to the <br> Chrome Policy Manager demo app!</h1>
+                <h4 class="font-weight-normal text-muted pb-3">This app demonstrates the features of the Chrome Policy
+                    Manager Open Source project: <a href="https://github.com/jonsmallhill/pluto">Pluto</a></h4>
                 <div>
-                    <p class="imgContainer">
-                        <span
-                            style="overflow: hidden; display: inline-block; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);">
-                            <img
-                            alt="organizational units - overview" src="/assets/ou-overview.png"
-                            style="transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
-                            width="586" height="200">
-                        </span>
-                    </p>
-                    <h4 class="section-subtitle text-muted text-center">
-                        This tool simplifies the way how Chromebook Administrators can manage their policies
-                        and offers three main features: Importing, Exporting and Editing existing policies. Therefore the app will
-                        read policies (.management.policy.readonly) but also modify/write policies (.management.policy.readonly).
-                        There's no other way to use a more limited scope for this use case.
-                    </h4>
-                </div>
-            </section>
-        </div>
-        <div class="container-gr">
-            <section class="section2">
-                <div class="content-header">
-                    <h2>These API namespaces are the available in this version:</h2>
-                    <h4 class="section-subtitle text-muted">
-                        chrome.users.* | chrome.users.apps.* |
-                        chrome.users.appsconfig.* | chrome.devices.* | chrome.devices.kiosk.* | chrome.devices.managedguest.* |
-                        chrome.devices.kiosk.apps.* | chrome.devices.kiosk.appsconfig.* | chrome.devices.managedguest.apps.*
-                    </h4>
-                    <h4 class="section-subtitle text-muted">
-                        All API calls will happen between your Chrome tab and the Google APIs. There's no
-                        middleware, framework or any 3rd party library involved - all requests happen in the browser sandbox. This
-                        app can be used with your own client ID if you like. All data (access token + app settings) will be stored
-                        in the local storage of the browser. Therefore, no data can be stored anywhere else.
-                    </h4>
+                    <a class="btn btn-opacity-success ml-1 button" href="/app.html">Get started</a>
+                    <br>
                     <br>
                 </div>
-            </section>
+            </div>
         </div>
-    </div>
+
+        <div class="content-wrapper">
+            <div class="container">
+                <section class="section1">
+                    <div class="content-header">
+                        <h2>Regarding your user data</h2>
+                        <h4 class="section-subtitle text-muted">
+                            This app will visualise your organisational units from the Google Admin Console
+                            (using the Directory API directory.orgunit.readonly).
+                        </h4>
+                    </div>
+                    <div>
+                        <p class="imgContainer">
+                            <span
+                                style="overflow: hidden; display: inline-block; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);">
+                                <img alt="organizational units - overview" src="/assets/ou-overview.png"
+                                    style="transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+                                    width="586" height="200">
+                            </span>
+                        </p>
+                        <h4 class="section-subtitle text-muted text-center">
+                            This tool simplifies the way how Chromebook Administrators can manage their policies
+                            and offers three main features: Importing, Exporting and Editing existing policies.
+                            Therefore the app will
+                            read policies (.management.policy.readonly) but also modify/write policies
+                            (.management.policy.readonly).
+                            There's no other way to use a more limited scope for this use case.
+                        </h4>
+                    </div>
+                </section>
+            </div>
+            <div class="container-gr">
+                <section class="section2">
+                    <div class="content-header">
+                        <h2>These API namespaces are the available in this version:</h2>
+                        <h4 class="section-subtitle text-muted">
+                            chrome.users.* | chrome.users.apps.* |
+                            chrome.users.appsconfig.* | chrome.devices.* | chrome.devices.kiosk.* |
+                            chrome.devices.managedguest.* |
+                            chrome.devices.kiosk.apps.* | chrome.devices.kiosk.appsconfig.* |
+                            chrome.devices.managedguest.apps.*
+                        </h4>
+                        <h4 class="section-subtitle text-muted">
+                            All API calls will happen between your Chrome tab and the Google APIs. There's no
+                            middleware, framework or any 3rd party library involved - all requests happen in the browser
+                            sandbox. This
+                            app can be used with your own client ID if you like. All data (access token + app settings)
+                            will be stored
+                            in the local storage of the browser. Therefore, no data can be stored anywhere else.
+                        </h4>
+                        <br>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
     <footer id="footer" class="footer">
         <p><span class="footer-part-1">&copy; 2022 Pluto. All Rights Reserved</span><span class="footer-part-2"> <a
                     href="/privacy.html">Privacy Policy</a> | <a href="/tos.html">Terms of Service</a></span></p>
