@@ -1,6 +1,6 @@
 # Pluto
 
-Welcome to the free Chrome Policy Manager! This tool is being developed and maintained by the Pluto open source team
+Welcome to the free Pluto Policy Manager! This tool is being developed and maintained by the Pluto open source team
 
 ## Installation
 
