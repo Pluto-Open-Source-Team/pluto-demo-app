@@ -1,6 +1,7 @@
 # Pluto
 
-Welcome to the free Pluto Policy Manager! This tool is being developed and maintained by the Pluto open source team
+Welcome to the free Pluto Policy Manager - your app to manage Chrome OS policies.
+This tool is being developed and maintained by the Pluto open source team
 
 ## Installation
 
