@@ -2,7 +2,7 @@ export const showSuccessful = (element, show) => {
     if (show) {
         element.innerHTML = `
             <div id="successfulBehaviour">
-                <img class="icon-image" src="@images/successful-icon.png" alt="successful-icon">
+                <img class="icon-image" src="/assets/images/successful-icon.png" alt="successful-icon">
                 <div id="successfulBehaviourSubText"><p>Policies are updated successfully!</p></div>
             </div>
         `;
@@ -21,7 +21,7 @@ export const showError = (element, show, errorMessage) => {
     if (show) {
         element.innerHTML = `
             <div id="errorBehaviour">
-                <img class="icon-image" src="@/images/error-icon.png" alt="successful-icon">
+                <img class="icon-image" src="/assets/images/error-icon.png" alt="error-icon">
                 <div id="errorBehaviourSubText">
                     <pre class="json-output">${syntaxHighlight(errorMessage)}</pre>
                 </div>
@@ -42,7 +42,7 @@ export const showNothingToModify = (element, show) => {
     if (show) {
         element.innerHTML = `
             <div id="nothingToModifyBehaviour">
-                <img class="icon-image" src="@/images/nothing.png" alt="nothing-to-modify-icon">
+                <img class="icon-image" src="/assets/images/nothing.png" alt="nothing-to-modify-icon">
                 <div id="nothingToModifyBehaviourSubText"><p>You didn't Modify any policies!</p></div>
             </div>
         `;
