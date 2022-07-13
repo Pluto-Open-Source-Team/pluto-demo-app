@@ -1,5 +1,5 @@
 export const APP = {
-    NAME: process.env.APP_NAME || 'Chrome Policy Manager',
+    NAME: process.env.APP_NAME || 'Pluto Policy Manager',
 };
 
 export const AUTH = {
