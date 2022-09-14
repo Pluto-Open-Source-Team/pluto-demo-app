@@ -85,6 +85,7 @@ const PreviewPolicies = {
                         chunk.push({
                             policyTargetKey: {
                                 targetResource: `orgunits/${orgUnitId.split(':')[1]}`,
+                                additionalTargetKeys: _thisPolicy.policiesAdditionalTargetKeys
                             },
                             policyValue: _thisPolicy.valueStructure,
                             updateMask: {

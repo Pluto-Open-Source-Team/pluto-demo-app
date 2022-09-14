@@ -21,6 +21,12 @@ export const resolvedPoliciesStore = async (orgUnitId, allSchemaNamespaces, mess
                 let policiesValueObject = policiesDataResponse[POLICIES_NAMESPACES[i]][j].value;
                 let valueObject = policiesValueObject.value;
 
+                let policiesAdditionalTargetKeys = {};
+
+                if (policiesDataResponse[POLICIES_NAMESPACES[i]][j].targetKey.additionalTargetKeys) {
+                    policiesAdditionalTargetKeys = JSON.stringify(policiesDataResponse[POLICIES_NAMESPACES[i]][j].targetKey.additionalTargetKeys);
+                }
+
                 if (!POLICIES_BLOCKLIST.includes(policiesValueObject.policySchema)) {
                     if (Object.keys(valueObject).length > 1) {
                         for (let k = 0; k < Object.keys(valueObject).length; k++) {
@@ -32,6 +38,7 @@ export const resolvedPoliciesStore = async (orgUnitId, allSchemaNamespaces, mess
                                     value: valueObject[Object.keys(valueObject)[k]],
                                     valueStructure: JSON.stringify(policiesValueObject),
                                     targetResource: orgUnitId,
+                                    policiesAdditionalTargetKeys
                                 });
                             }
                         }
@@ -44,6 +51,7 @@ export const resolvedPoliciesStore = async (orgUnitId, allSchemaNamespaces, mess
                             value: returnedLeafValue.value,
                             valueStructure: JSON.stringify(policiesValueObject),
                             targetResource: orgUnitId,
+                            policiesAdditionalTargetKeys
                         });
                     }
                 }

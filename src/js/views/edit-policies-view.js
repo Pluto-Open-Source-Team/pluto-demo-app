@@ -23,6 +23,18 @@ function replacePolicyValue(obj, objKey, newValue) {
     }
 }
 
+function escapeJsonString(jsonData) {
+    return jsonData
+      .replace(/\\n/g, '\\n')
+      .replace(/\\'/g, "\\'")
+      .replace(/\\"/g, '\\"')
+      .replace(/\\&/g, '\\&')
+      .replace(/\\r/g, '\\r')
+      .replace(/\\t/g, '\\t')
+      .replace(/\\b/g, '\\b')
+      .replace(/\\f/g, '\\f');
+}
+
 const EditPolicies = {
     /**
      * Render the component content.
@@ -39,7 +51,7 @@ const EditPolicies = {
             `;
 
             tablesRows += policies[Object.keys(policies)[i]]
-                .map(({ leafName, value, valueStructure, targetResource }) => {
+                .map(({ leafName, value, valueStructure, targetResource, policiesAdditionalTargetKeys }) => {
                     let oldValue = value;
 
                     if (currentPolicies) {
@@ -58,7 +70,8 @@ const EditPolicies = {
                       oldValue, // old value
                       Object.keys(policies)[i],
                       targetResource,
-                      valueStructure
+                      valueStructure,
+                      policiesAdditionalTargetKeys
                     );
                 })
                 .join('\n');
@@ -72,14 +85,15 @@ const EditPolicies = {
                 });
 
                 tablesRows += diffResults
-                  .map(({ leafName, value, valueStructure, targetResource }) => {
+                  .map(({ leafName, value, valueStructure, targetResource, policiesAdditionalTargetKeys }) => {
                       return textInput(
                         leafName,
                         value, // new value
                         '', // old value
                         Object.keys(policies)[i],
                         targetResource,
-                        valueStructure
+                        valueStructure,
+                        policiesAdditionalTargetKeys
                       );
                   })
                   .join('\n');
@@ -119,6 +133,7 @@ const EditPolicies = {
                 const _ouId = policiesInputs[i].getAttribute('data-ou-id');
                 const _valueStructure = policiesInputs[i].getAttribute('data-value-structure');
                 const _oldValue = policiesInputs[i].getAttribute('data-old-value');
+                const _policiesAdditionalTargetKeys = policiesInputs[i].getAttribute('data-policies-additional-target-keys');
 
                 let isChanged = false;
 
@@ -131,21 +146,21 @@ const EditPolicies = {
                         policiesFromEdit[policyNamespace] = [];
                     }
 
-                    const myEscapedJSONString = _valueStructure
-                        .replace(/\\n/g, '\\n')
-                        .replace(/\\'/g, "\\'")
-                        .replace(/\\"/g, '\\"')
-                        .replace(/\\&/g, '\\&')
-                        .replace(/\\r/g, '\\r')
-                        .replace(/\\t/g, '\\t')
-                        .replace(/\\b/g, '\\b')
-                        .replace(/\\f/g, '\\f');
+                    const myEscapedJSONString = escapeJsonString(_valueStructure);
+                    let escapedAdditionalTargetKeysJson = escapeJsonString(_policiesAdditionalTargetKeys);
+
+                    try {
+                        escapedAdditionalTargetKeysJson = JSON.parse(escapedAdditionalTargetKeysJson);
+                    } catch (e) {
+                        escapedAdditionalTargetKeysJson = {};
+                    }
 
                     policiesFromEdit[policyNamespace].push({
                         leafName: policiesInputs[i].getAttribute('name'),
                         value: policiesInputs[i].value,
                         valueStructure: JSON.parse(myEscapedJSONString),
                         targetResource: _ouId,
+                        policiesAdditionalTargetKeys: escapedAdditionalTargetKeysJson,
                     });
                 }
             }
