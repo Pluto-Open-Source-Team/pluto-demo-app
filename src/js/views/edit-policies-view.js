@@ -3,8 +3,8 @@ import { showLoader } from '../components/pageLoader.js';
 import { policySchemasStore } from '../stores/policySchemas.store.js';
 import PreviewPolicies from './preview-policies-view.js';
 
-const renderPreviewPoliciesPage = async (elem, _policies, ouPathName, ouId) => {
-    elem.innerHTML = await PreviewPolicies.render(_policies, ouPathName);
+const renderPreviewPoliciesPage = async (elem, _policies, ouPathName, ouId, deprecatedPolicies) => {
+    elem.innerHTML = await PreviewPolicies.render(_policies, ouPathName, deprecatedPolicies);
     await PreviewPolicies.post_render(_policies, ouId);
 };
 
@@ -35,6 +35,15 @@ function escapeJsonString(jsonData) {
       .replace(/\\f/g, '\\f');
 }
 
+function isObjectString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 const EditPolicies = {
     /**
      * Render the component content.
@@ -56,10 +65,13 @@ const EditPolicies = {
 
                     if (currentPolicies) {
                         const cPoliciesArr = currentPolicies[Object.keys(policies)[i]];
-                        for (let j = 0; j < cPoliciesArr.length; j++) {
-                            if (leafName === cPoliciesArr[j].leafName) {
-                                oldValue = cPoliciesArr[j].value;
-                                break;
+
+                        if (cPoliciesArr) {
+                            for (let j = 0; j < cPoliciesArr.length; j++) {
+                                if (leafName === cPoliciesArr[j].leafName) {
+                                    oldValue = cPoliciesArr[j].value;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -79,7 +91,7 @@ const EditPolicies = {
             /**
              * Re-facto this code block
              */
-            if (currentPolicies) {
+            if (currentPolicies && currentPolicies[Object.keys(policies)[i]]) {
                 const diffResults = policies[Object.keys(policies)[i]].filter(({ leafName: leaf1 }) => {
                     return !currentPolicies[Object.keys(policies)[i]].some(({ leafName: leaf2 }) => leaf2 === leaf1);
                 });
@@ -157,7 +169,7 @@ const EditPolicies = {
 
                     policiesFromEdit[policyNamespace].push({
                         leafName: policiesInputs[i].getAttribute('name'),
-                        value: policiesInputs[i].value,
+                        value: isObjectString(policiesInputs[i].value) ? JSON.parse(policiesInputs[i].value) : policiesInputs[i].value,
                         valueStructure: JSON.parse(myEscapedJSONString),
                         targetResource: _ouId,
                         policiesAdditionalTargetKeys: escapedAdditionalTargetKeysJson,
@@ -169,6 +181,8 @@ const EditPolicies = {
             showLoader(contentElement, true, 'Preparing to preview edited policies...');
             let alertMessageElement = document.getElementById('loaderSubText');
 
+            let deprecatedPolicies = [];
+
             // Replace old value with new one in the structure
             for (let i = 0; i < Object.keys(policiesFromEdit).length; i++) {
                 // Namespaces
@@ -179,6 +193,30 @@ const EditPolicies = {
                         _thisPolicy.leafName.split('.')[_thisPolicy.leafName.split('.').length - 1];
 
                     replacePolicyValue(_thisPolicy.valueStructure.value, propertyKeyName, _thisPolicy.value);
+
+                    // Check if policy is in API_CURRENT
+                    if (localStorage.getItem('policySchemas')) {
+                        const parsedPolicySchemas = JSON.parse(localStorage.getItem('policySchemas'));
+                        let isValid = false;
+
+                        for (let k = 0; k < parsedPolicySchemas.length; k++) {
+                            if (_thisPolicy.valueStructure.policySchema === parsedPolicySchemas[k].schemaName) {
+                                isValid = true;
+                            }
+                        }
+
+                        if (!isValid) {
+                            deprecatedPolicies.push({
+                                index: j,
+                                policy: _thisPolicy.valueStructure.policySchema
+                            });
+                        }
+                    }
+                }
+
+                // Remove deprecated policies
+                for (let j = deprecatedPolicies.length - 1; j >= 0; j--) {
+                    policiesFromEdit[Object.keys(policiesFromEdit)[i]].splice(deprecatedPolicies[j].index, 1);
                 }
             }
 
@@ -191,7 +229,7 @@ const EditPolicies = {
             showLoader(contentElement, false);
 
             // Render preview page
-            await renderPreviewPoliciesPage(contentElement, checkedPolicies, orgUnitCompletePath, orgUnitId);
+            await renderPreviewPoliciesPage(contentElement, checkedPolicies, orgUnitCompletePath, orgUnitId, deprecatedPolicies);
         });
     },
 };

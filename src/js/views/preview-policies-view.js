@@ -2,6 +2,7 @@ import { previewInput } from '../components/inputs.js';
 import { showLoader } from '../components/pageLoader.js';
 import { showError, showNothingToModify, showSuccessful } from '../components/requestsBehaviour.js';
 import googleApiService from '../services/googleApi.service.js';
+import { POLICIES_BLOCKLIST } from '../config.js';
 
 function checkIfObjEmpty(_obj) {
     if (_obj) {
@@ -15,9 +16,10 @@ const PreviewPolicies = {
     /**
      * Render the component content.
      */
-    render: async (policies, orgUnitCompletePath) => {
+    render: async (policies, orgUnitCompletePath, deprecatedPolicies) => {
         let tablesRows = '';
         let finalHtmlContent = '';
+        let deprecatedPoliciesAlert = '';
 
         if (checkIfObjEmpty(policies)) {
             for (let i = 0; i < Object.keys(policies).length; i++) {
@@ -30,7 +32,7 @@ const PreviewPolicies = {
 
                 tablesRows += policies[Object.keys(policies)[i]]
                     .map(({ leafName, value }) => {
-                        return previewInput(leafName, value.toString());
+                        return previewInput(leafName, value);
                     })
                     .join('\n');
             }
@@ -47,11 +49,27 @@ const PreviewPolicies = {
             `;
         }
 
+        if (deprecatedPolicies.length > 0) {
+            deprecatedPoliciesAlert = `
+                <div class="info-note mb-6">
+                    <p>
+                        The following policies are not supported:<br>
+                        + ${deprecatedPolicies.map((policy) => {
+                            return '<strong>' + policy.policy + '</strong> | ';
+                        }).join(' ')}
+                        <br>
+                        Please check: <a href="https://chromeenterprise.google/policies/" target='_blank'>https://chromeenterprise.google/policies/</a> for more information.
+                    </p>
+                </div>
+            `;
+        }
+
         return `
             <div class="sub-content">
                 <div>
                     <h3 class="edit-policies-title">${orgUnitCompletePath}</h3>
                 </div>
+                ${deprecatedPoliciesAlert}
                 ${finalHtmlContent}
                 <div id="behaviourContainer"></div>
             </div>
@@ -82,26 +100,39 @@ const PreviewPolicies = {
                         // Policies
                         let _thisPolicy = policies[Object.keys(policies)[i]][j];
 
-                        chunk.push({
-                            policyTargetKey: {
-                                targetResource: `orgunits/${orgUnitId.split(':')[1]}`,
-                                additionalTargetKeys: _thisPolicy.policiesAdditionalTargetKeys
-                            },
-                            policyValue: _thisPolicy.valueStructure,
-                            updateMask: {
-                                paths: Object.keys(_thisPolicy.valueStructure.value).map((_key) => {
-                                    return _key;
-                                }),
-                            },
-                        });
+                        if (_thisPolicy.valueStructure.value && Object.keys(_thisPolicy.valueStructure.value).length !== 0 // Check if Obj not empty
+                            && !POLICIES_BLOCKLIST.includes(_thisPolicy.valueStructure.policySchema)) { // Block some policies
+                            chunk.push({
+                                policyTargetKey: {
+                                    targetResource: `orgunits/${orgUnitId.split(':')[1]}`,
+                                    additionalTargetKeys: _thisPolicy.policiesAdditionalTargetKeys
+                                },
+                                policyValue: _thisPolicy.valueStructure,
+                                updateMask: {
+                                    paths: Object.keys(_thisPolicy.valueStructure.value).map((_key) => {
+                                        return _key;
+                                    }),
+                                },
+                            });
+                        }
                     }
 
                     requests.push(chunk);
                 }
 
+                // Remove and clean requests duplicates
+                let clearedRequests = [];
+                for (let i = 0; i < requests.length; i++) {
+                    const arrUniq = [...new Map(requests[i].map(v => [JSON.stringify([v.policyValue.policySchema, v.policyTargetKey.additionalTargetKeys]), v])).values()];
+
+                    if (arrUniq.length !== 0) {
+                        clearedRequests.push(arrUniq);
+                    }
+                }
+
                 // Send batch modify request
                 const batchModifyPoliciesResponse = await googleApiService.batchModifyPolicies(
-                    requests,
+                    clearedRequests,
                     alertMessageElement
                 );
 

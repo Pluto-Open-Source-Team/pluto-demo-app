@@ -29,6 +29,11 @@ export const POLICIES_NAMESPACES = [
     'chrome.devices.kiosk.apps.*',
     'chrome.devices.kiosk.appsconfig.*',
     'chrome.devices.managedguest.apps.*',
+    'chrome.networks.wifi.*',
+    'chrome.networks.ethernet.*',
+    'chrome.networks.vpns.*',
+    'chrome.networks.certificates.*',
+    'chrome.networks.globalsettings.*'
 ];
 
 export const POLICIES_BLOCKLIST = [
@@ -54,5 +59,9 @@ export const ERR = {
     POLICIES_FILE: {
         color: '#f69595',
         message: 'Policies file format is not correct.',
+    },
+    WRONG_POLICIES_FILE: {
+        color: '#f69595',
+        message: 'Policies file is not compatible with this app version.',
     },
 };

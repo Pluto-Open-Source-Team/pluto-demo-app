@@ -5,7 +5,7 @@ export const showAlert = (elementId, message, color) => {
         '<div class="alert" style="background-color:' +
         color +
         '">' +
-        '<span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>' +
+        '<span class="closebtn" onclick="this.parentElement.style.visibility=\'hidden\';">&times;</span>' +
         message +
         '</div>';
 };

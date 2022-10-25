@@ -220,22 +220,27 @@ const Diagram = {
 
                     reader.onload = async (_event) => {
                         try {
-                            // Start page loader
-                            showLoader(contentElement, true, 'Preparing to fetch policies...');
-
                             let newParsedPolicies = JSON.parse(_event.target.result);
 
-                            // Download current policies
-                            const cPolicies = await resolvedPoliciesStore(
-                              nodeId.substr(nodeId.indexOf(':') + 1),
-                              Object.keys(newParsedPolicies),
-                              null
-                            );
+                            if (Object.keys(newParsedPolicies)[0] && newParsedPolicies[Object.keys(newParsedPolicies)[0]][0].policiesAdditionalTargetKeys) {
+                                // Start page loader
+                                showLoader(contentElement, true, 'Preparing to fetch policies...');
+
+                                // Download current policies
+                                const cPolicies = await resolvedPoliciesStore(
+                                  nodeId.substr(nodeId.indexOf(':') + 1),
+                                  Object.keys(newParsedPolicies),
+                                  null
+                                );
 
 
-                            showLoader(contentElement, false);
-                            await renderEditPoliciesPage(contentElement, cPolicies, newParsedPolicies, nodePath, nodeId);
+                                showLoader(contentElement, false);
+                                await renderEditPoliciesPage(contentElement, cPolicies, newParsedPolicies, nodePath, nodeId);
+                            } else {
+                                showAlert('alert-message', ERR.WRONG_POLICIES_FILE.message, ERR.WRONG_POLICIES_FILE.color);
+                            }
                         } catch (e) {
+                            console.log(e);
                             showAlert('alert-message', ERR.POLICIES_FILE.message, ERR.POLICIES_FILE.color);
                         }
                     };

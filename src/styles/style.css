@@ -916,3 +916,7 @@ PP - TOS
 .articleList li {
     list-style-type: square;
 }
+
+.mb-6 {
+    margin-bottom: 6px;
+}

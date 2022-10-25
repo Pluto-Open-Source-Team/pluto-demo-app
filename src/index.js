@@ -5,6 +5,7 @@ import Footer from '@/js/views/footer-view.js';
 import authService from '@/js/services/auth.service.js';
 import Diagram from '@/js/views/diagram-view.js';
 import '@/styles/style.css';
+import googleApiService from '@/js/services/googleApi.service';
 
 const renderSetupPage = async (elem) => {
     if (elem) {
@@ -29,6 +30,23 @@ const renderDiagram = async (elem) => {
     }
 };
 
+const getPolicySchemas = async () => {
+    const policySchemasDataResponse = await googleApiService.getPolicySchemas();
+    let policySchemasArr = [];
+
+    for (let i = 0; i < policySchemasDataResponse.length; i++) {
+
+        if (policySchemasDataResponse[i].policyApiLifecycle.policyApiLifecycleStage === 'API_CURRENT') {
+            policySchemasArr.push({
+                schemaName: policySchemasDataResponse[i].schemaName,
+                policyApiLifecycleStage: policySchemasDataResponse[i].policyApiLifecycle.policyApiLifecycleStage,
+            });
+        }
+    }
+
+    localStorage.setItem('policySchemas', JSON.stringify(policySchemasArr));
+}
+
 const app = async () => {
     // Load view elements
     const headerElement = document.getElementById('header');
@@ -44,6 +62,7 @@ const app = async () => {
     if (appSettings && accessToken) {
         await renderHeaderNFooter(headerElement, footerElement); // Render Header and Footer
         await renderDiagram(contentElement); // Render Main Modal
+        await getPolicySchemas(); // Loading the policy schemas
     } else {
         await renderSetupPage(contentElement);
     }

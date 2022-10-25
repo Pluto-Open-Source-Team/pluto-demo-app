@@ -3,11 +3,28 @@ Components ONLY for edit policies page
  */
 
 export const textInput = (leafName, value, oldValue, namespace, ouId, valueStructure, policiesAdditionalTargetKeys) => {
+    const cValue = typeof value === 'object' ? JSON.stringify(value) : value; // Current value
+    const oValue = typeof oldValue === 'object' ? JSON.stringify(oldValue) : oldValue; // Old value
+
     return `
         <tr>
             <td  class="child-row">${leafName}</td>
             <td>
-                <input class="editValueInputText policies-inputs" type="text" name="${leafName}" id="${leafName}" value="${value}" data-namespace="${namespace}" data-ou-id="${ouId}" data-value-structure='${valueStructure}' data-old-value="${oldValue}" data-policies-additional-target-keys='${policiesAdditionalTargetKeys}' required>
+                <input class="editValueInputText policies-inputs" type="text" name='${leafName}' id='${leafName}' value='${cValue}' data-namespace='${namespace}' data-ou-id='${ouId}' data-value-structure='${valueStructure}' data-old-value='${oValue}' data-policies-additional-target-keys='${policiesAdditionalTargetKeys}' required>
+            </td>
+        </tr>
+    `;
+};
+
+// preview-input CSS class to display icon inside input
+export const previewInput = (leafName, value) => {
+    const cValue = typeof value === 'object' ? JSON.stringify(value) : value;
+
+    return `
+        <tr>
+            <td  class="child-row">${leafName}</td>
+            <td>
+                <input class="editValueInputText policies-inputs" type="text" name='${leafName}' id='${leafName}' value='${cValue}' required readonly>
             </td>
         </tr>
     `;
@@ -34,18 +51,6 @@ export const colorInput = (leafName, value, namespace, ouId, valueStructure) => 
             <td  class="child-row">${leafName}</td>
             <td>
                 <input class="policies-inputs" type="color" id="${leafName}" name="${leafName}" value="${value}" data-namespace="${namespace}" data-ou-id="${ouId}" data-value-structure='${valueStructure}' data-old-value="${value}">
-            </td>
-        </tr>
-    `;
-};
-
-// preview-input CSS class to display icon inside input
-export const previewInput = (leafName, value) => {
-    return `
-        <tr>
-            <td  class="child-row">${leafName}</td>
-            <td>
-                <input class="editValueInputText policies-inputs" type="text" name="${leafName}" id="${leafName}" value="${value}" required readonly>
             </td>
         </tr>
     `;
