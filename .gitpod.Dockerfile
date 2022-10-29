@@ -16,9 +16,3 @@ COPY --chown=gitpod gcloud-default-config $GCLOUD_CONFIG_DIR/configurations/conf
 
 # Set Application Default Credentials (ADC) based on user-provided env var
 RUN echo ". /workspace/Pluto-Policy-Manager/scripts/setup-google-adc.sh" >> ~/.bashrc
-
-# Install Google Clasp
-RUN bash -c "npm install --global @google/clasp"
-
-# Set ~/.clasprc based on user-provided env var
-RUN echo ". /workspace/Pluto-Policy-Manager/scripts/setup-clasprc.sh" >> ~/.bashrc
