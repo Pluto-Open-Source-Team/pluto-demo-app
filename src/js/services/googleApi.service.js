@@ -186,6 +186,33 @@ class GoogleApiService {
                 });
         });
     }
+
+    defineNetwork(networkRequests, messageElement) {
+        return new Promise(async (resolve, reject) => {
+            messageElement.innerHTML = `<p>Defining a network...</p>`;
+
+            const url = `${API.G_CHROME_POLICY_HOST}/v1/customers/${API.G_CUSTOMER}/policies/networks:defineNetwork`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${authService.getAccessToken()}`,
+                },
+                body: JSON.stringify(networkRequests),
+            })
+              .then(async (res) => {
+                  if (res.ok) {
+                      resolve(true);
+                  } else {
+                      resolve(res.json());
+                  }
+              })
+              .catch((err) => {
+                  resolve(err.message);
+              });
+        });
+    }
 }
 
 const googleApiService = new GoogleApiService();

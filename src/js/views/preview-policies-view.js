@@ -1,6 +1,6 @@
 import { previewInput } from '../components/inputs.js';
 import { showLoader } from '../components/pageLoader.js';
-import { showError, showNothingToModify, showSuccessful } from '../components/requestsBehaviour.js';
+import { showError, showNothingToModify, showSuccessful, showErrorAndSuccessful } from '../components/requestsBehaviour.js';
 import googleApiService from '../services/googleApi.service.js';
 import { POLICIES_BLOCKLIST } from '../config.js';
 
@@ -91,6 +91,10 @@ const PreviewPolicies = {
 
                 // Build modify request
                 let requests = [];
+                let wifiNetworkRequest = {
+                    targetResource: `orgunits/${orgUnitId.split(':')[1]}`,
+                    settings: []
+                };
 
                 for (let i = 0; i < Object.keys(policies).length; i++) {
                     // Namespaces
@@ -102,7 +106,7 @@ const PreviewPolicies = {
 
                         if (_thisPolicy.valueStructure.value && Object.keys(_thisPolicy.valueStructure.value).length !== 0 // Check if Obj not empty
                             && !POLICIES_BLOCKLIST.includes(_thisPolicy.valueStructure.policySchema)) { // Block some policies
-                            chunk.push({
+                            const reqObj = {
                                 policyTargetKey: {
                                     targetResource: `orgunits/${orgUnitId.split(':')[1]}`,
                                     additionalTargetKeys: _thisPolicy.policiesAdditionalTargetKeys
@@ -113,7 +117,20 @@ const PreviewPolicies = {
                                         return _key;
                                     }),
                                 },
-                            });
+                            };
+
+                            if ('chrome.networks.wifi.*' === Object.keys(policies)[i]) {
+                                if (_thisPolicy.valueStructure.policySchema === 'chrome.networks.wifi.Details') {
+                                    wifiNetworkRequest.name = _thisPolicy.policiesAdditionalTargetKeys.network_id;
+                                }
+
+                                wifiNetworkRequest.settings.push({
+                                    policySchema: _thisPolicy.valueStructure.policySchema,
+                                    value: _thisPolicy.valueStructure.value,
+                                });
+                            } else {
+                                chunk.push(reqObj);
+                            }
                         }
                     }
 
@@ -130,17 +147,43 @@ const PreviewPolicies = {
                     }
                 }
 
+                let errorMessages = {};
+                let successMessages = {
+                    batchModify: true
+                };
+
                 // Send batch modify request
                 const batchModifyPoliciesResponse = await googleApiService.batchModifyPolicies(
                     clearedRequests,
                     alertMessageElement
                 );
 
-                if (batchModifyPoliciesResponse === true) {
+                if (batchModifyPoliciesResponse !== true) {
+                    errorMessages.batchModify = batchModifyPoliciesResponse;
+                    successMessages.batchModify = false;
+                }
+
+                if (wifiNetworkRequest.settings.length > 0) {
+                    successMessages.defineNetwork = true;
+                    // Define Network
+                    const defineNetworkResponse = await googleApiService.defineNetwork(
+                      wifiNetworkRequest,
+                      alertMessageElement
+                    );
+
+                    if (defineNetworkResponse !== true) {
+                        successMessages.defineNetwork = false;
+                        errorMessages.defineNetwork = defineNetworkResponse;
+                    }
+                }
+
+                showErrorAndSuccessful(contentElement, true, successMessages, errorMessages);
+
+                /*if (batchModifyPoliciesResponse === true) {
                     showSuccessful(contentElement, true);
                 } else {
                     showError(contentElement, true, batchModifyPoliciesResponse);
-                }
+                }*/
             });
         } else {
             let behaviourContainerElement = document.getElementById('behaviourContainer');
