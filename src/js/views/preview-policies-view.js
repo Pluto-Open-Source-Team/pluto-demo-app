@@ -91,10 +91,9 @@ const PreviewPolicies = {
 
                 // Build modify request
                 let requests = [];
-                let wifiNetworkRequest = {
-                    targetResource: `orgunits/${orgUnitId.split(':')[1]}`,
-                    settings: []
-                };
+                let unformattedNetworkPolicies = {};
+                let existedWifiNetworks = [];
+                let networkBatchModifyRequests = {};
 
                 for (let i = 0; i < Object.keys(policies).length; i++) {
                     // Namespaces
@@ -119,17 +118,47 @@ const PreviewPolicies = {
                                 },
                             };
 
-                            if ('chrome.networks.wifi.*' === Object.keys(policies)[i]) {
-                                if (_thisPolicy.valueStructure.policySchema === 'chrome.networks.wifi.Details') {
-                                    wifiNetworkRequest.name = _thisPolicy.policiesAdditionalTargetKeys.network_id.replace(/-[^/-]+$/, '');
+                            // Check if Wi-Fi network exists already
+                            if (Object.keys(policies)[i] === 'chrome.networks.wifi.*') {
+                                /*
+                                We executed the API call inside loop in this position to make sure that it is executed only if there is network policies
+                                Also, we store the policies, so we don't execute the API multiple times
+                                 */
+                                if (existedWifiNetworks.length === 0) {
+                                    const _getResolvedPoliciesPromiseAllResponse = await googleApiService.getResolvedPoliciesPromiseAll(
+                                      orgUnitId.split(':')[1],
+                                      ['chrome.networks.wifi.Details']
+                                    );
+                                    existedWifiNetworks = _getResolvedPoliciesPromiseAllResponse['chrome.networks.wifi.*'].map(function(i) {
+                                        return i.targetKey.additionalTargetKeys.network_id;
+                                    });
                                 }
+                            }
 
-                                wifiNetworkRequest.settings.push({
+                            if ((Object.keys(policies)[i] === 'chrome.networks.wifi.*') && !existedWifiNetworks.includes(_thisPolicy.policiesAdditionalTargetKeys.network_id)) {
+                                const _networkId = _thisPolicy.policiesAdditionalTargetKeys.network_id;
+                                const _thisNetworkObj = {
                                     policySchema: _thisPolicy.valueStructure.policySchema,
                                     value: _thisPolicy.valueStructure.value,
-                                });
+                                };
+
+                                if (unformattedNetworkPolicies[_networkId] && unformattedNetworkPolicies[_networkId].length >= 0) {
+                                    unformattedNetworkPolicies[_networkId].push(_thisNetworkObj);
+                                } else {
+                                    unformattedNetworkPolicies[_networkId] = [_thisNetworkObj];
+                                }
                             } else {
-                                chunk.push(reqObj);
+                                if (Object.keys(policies)[i] === 'chrome.networks.wifi.*') {
+                                    const _thisObjKey = reqObj.policyTargetKey.additionalTargetKeys.network_id;
+
+                                    if (networkBatchModifyRequests[_thisObjKey] && networkBatchModifyRequests[_thisObjKey].length >= 0) {
+                                        networkBatchModifyRequests[reqObj.policyTargetKey.additionalTargetKeys.network_id].push(reqObj);
+                                    } else {
+                                        networkBatchModifyRequests[reqObj.policyTargetKey.additionalTargetKeys.network_id] = [reqObj]
+                                    }
+                                } else {
+                                    chunk.push(reqObj);
+                                }
                             }
                         }
                     }
@@ -147,10 +176,29 @@ const PreviewPolicies = {
                     }
                 }
 
+                // Format network policies request
+                let wifiNetworkRequests = [];
+                for (let i = 0; i < Object.keys(unformattedNetworkPolicies).length; i++) {
+                    let _thisRequest = {
+                        targetResource: `orgunits/${orgUnitId.split(':')[1]}`,
+                        settings: [],
+                        name: Object.keys(unformattedNetworkPolicies)[i].replace(/-[^/-]+$/, '')
+                    }
+                    for (let j = 0; j < unformattedNetworkPolicies[Object.keys(unformattedNetworkPolicies)[i]].length; j++) {
+                        _thisRequest.settings.push(unformattedNetworkPolicies[Object.keys(unformattedNetworkPolicies)[i]][j]);
+                    }
+                    wifiNetworkRequests.push(_thisRequest);
+                }
+
                 let errorMessages = {};
                 let successMessages = {
-                    batchModify: true
+                    batchModify: true,
+                    defineNetwork: true,
                 };
+
+                for (let i = 0; i < Object.keys(networkBatchModifyRequests).length; i++) {
+                    clearedRequests.push(networkBatchModifyRequests[Object.keys(networkBatchModifyRequests)[i]]);
+                }
 
                 // Send batch modify request
                 const batchModifyPoliciesResponse = await googleApiService.batchModifyPolicies(
@@ -163,11 +211,12 @@ const PreviewPolicies = {
                     successMessages.batchModify = false;
                 }
 
-                if (wifiNetworkRequest.settings.length > 0) {
+                if (wifiNetworkRequests.length > 0) {
                     successMessages.defineNetwork = true;
+
                     // Define Network
-                    const defineNetworkResponse = await googleApiService.defineNetwork(
-                      wifiNetworkRequest,
+                    const defineNetworkResponse = await googleApiService.defineNetworks(
+                      wifiNetworkRequests,
                       alertMessageElement
                     );
 
@@ -178,12 +227,6 @@ const PreviewPolicies = {
                 }
 
                 showErrorAndSuccessful(contentElement, true, successMessages, errorMessages);
-
-                /*if (batchModifyPoliciesResponse === true) {
-                    showSuccessful(contentElement, true);
-                } else {
-                    showError(contentElement, true, batchModifyPoliciesResponse);
-                }*/
             });
         } else {
             let behaviourContainerElement = document.getElementById('behaviourContainer');

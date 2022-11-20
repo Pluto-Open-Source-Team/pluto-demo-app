@@ -187,29 +187,57 @@ class GoogleApiService {
         });
     }
 
-    defineNetwork(networkRequests, messageElement) {
-        return new Promise(async (resolve, reject) => {
-            messageElement.innerHTML = `<p>Defining a network...</p>`;
-
+    defineNetworks(networkRequests, messageElement) {
+        return new Promise(async (resolve) => {
             const url = `${API.G_CHROME_POLICY_HOST}/v1/customers/${API.G_CUSTOMER}/policies/networks:defineNetwork`;
+            const accessToken = `Bearer ${authService.getAccessToken()}`;
+            const delayIncrement = 1500;
+            let delay = 0;
+            let counter = 1;
+            let requestsCount = networkRequests.length;
 
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${authService.getAccessToken()}`,
-                },
-                body: JSON.stringify(networkRequests),
-            })
-              .then(async (res) => {
-                  if (res.ok) {
-                      resolve(true);
+            const requests = networkRequests.map((_request) => {
+                delay += delayIncrement;
+
+                return new Promise((resolve) => setTimeout(resolve, delay)).then(() => {
+                    messageElement.innerHTML = `<p>Defining networks batch <strong>${counter} / ${requestsCount}</strong> ...</p>`;
+                    counter++;
+                    return fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: accessToken,
+                        },
+                        body: JSON.stringify(_request),
+                    });
+                });
+            });
+
+            Promise.all(requests)
+              .then(async (response) => {
+                  let errorMessage = 'Oops! Something went wrong.';
+                  let isError = false;
+
+                  for (let i = 0; i < response.length; i++) {
+                      if (response[i].status === 200) {
+                          isError = false;
+                      } else if (response[i].status === 401) {
+                          authService.logout();
+                      } else {
+                          errorMessage = await response[i].json();
+                          isError = true;
+                          break;
+                      }
+                  }
+
+                  if (isError) {
+                      resolve(errorMessage);
                   } else {
-                      resolve(res.json());
+                      resolve(true);
                   }
               })
               .catch((err) => {
-                  resolve(err.message);
+                  resolve(err);
               });
         });
     }
