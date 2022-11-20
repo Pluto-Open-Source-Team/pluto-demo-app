@@ -121,7 +121,7 @@ const PreviewPolicies = {
 
                             if ('chrome.networks.wifi.*' === Object.keys(policies)[i]) {
                                 if (_thisPolicy.valueStructure.policySchema === 'chrome.networks.wifi.Details') {
-                                    wifiNetworkRequest.name = _thisPolicy.policiesAdditionalTargetKeys.network_id;
+                                    wifiNetworkRequest.name = _thisPolicy.policiesAdditionalTargetKeys.network_id.replace(/-[^/-]+$/, '');
                                 }
 
                                 wifiNetworkRequest.settings.push({
