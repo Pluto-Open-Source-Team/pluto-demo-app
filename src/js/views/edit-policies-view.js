@@ -148,12 +148,17 @@ const EditPolicies = {
                 const _policiesAdditionalTargetKeys = policiesInputs[i].getAttribute('data-policies-additional-target-keys');
 
                 let isChanged = false;
+                let isWifiNetworkSettings = false;
 
                 if (policiesInputs[i].value !== _oldValue) {
                     isChanged = true;
                 }
 
-                if (isChanged) {
+                if (JSON.parse(escapeJsonString(_valueStructure)).policySchema.includes('chrome.networks.wifi')) {
+                    isWifiNetworkSettings = true;
+                }
+
+                if (isChanged || isWifiNetworkSettings) {
                     if (!(policyNamespace in policiesFromEdit)) {
                         policiesFromEdit[policyNamespace] = [];
                     }
@@ -187,29 +192,31 @@ const EditPolicies = {
             for (let i = 0; i < Object.keys(policiesFromEdit).length; i++) {
                 // Namespaces
                 for (let j = 0; j < policiesFromEdit[Object.keys(policiesFromEdit)[i]].length; j++) {
-                    // policies
-                    let _thisPolicy = policiesFromEdit[Object.keys(policiesFromEdit)[i]][j];
-                    let propertyKeyName =
-                        _thisPolicy.leafName.split('.')[_thisPolicy.leafName.split('.').length - 1];
+                    if (Object.keys(policiesFromEdit)[i] !== 'chrome.networks.wifi.*') {
+                        // policies
+                        let _thisPolicy = policiesFromEdit[Object.keys(policiesFromEdit)[i]][j];
+                        let propertyKeyName =
+                          _thisPolicy.leafName.split('.')[_thisPolicy.leafName.split('.').length - 1];
 
-                    replacePolicyValue(_thisPolicy.valueStructure.value, propertyKeyName, _thisPolicy.value);
+                        replacePolicyValue(_thisPolicy.valueStructure.value, propertyKeyName, _thisPolicy.value);
 
-                    // Check if policy is in API_CURRENT
-                    if (localStorage.getItem('policySchemas')) {
-                        const parsedPolicySchemas = JSON.parse(localStorage.getItem('policySchemas'));
-                        let isValid = false;
+                        // Check if policy is in API_CURRENT
+                        if (localStorage.getItem('policySchemas')) {
+                            const parsedPolicySchemas = JSON.parse(localStorage.getItem('policySchemas'));
+                            let isValid = false;
 
-                        for (let k = 0; k < parsedPolicySchemas.length; k++) {
-                            if (_thisPolicy.valueStructure.policySchema === parsedPolicySchemas[k].schemaName) {
-                                isValid = true;
+                            for (let k = 0; k < parsedPolicySchemas.length; k++) {
+                                if (_thisPolicy.valueStructure.policySchema === parsedPolicySchemas[k].schemaName) {
+                                    isValid = true;
+                                }
                             }
-                        }
 
-                        if (!isValid) {
-                            deprecatedPolicies.push({
-                                index: j,
-                                policy: _thisPolicy.valueStructure.policySchema
-                            });
+                            if (!isValid) {
+                                deprecatedPolicies.push({
+                                    index: j,
+                                    policy: _thisPolicy.valueStructure.policySchema
+                                });
+                            }
                         }
                     }
                 }

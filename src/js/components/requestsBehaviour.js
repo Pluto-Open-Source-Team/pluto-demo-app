@@ -38,6 +38,47 @@ export const showError = (element, show, errorMessage) => {
     }
 };
 
+function generateHtmlErrorElement(errorMessage) {
+    return `
+            <div id="errorBehaviour">
+                <img class="icon-image" src="/assets/images/error-icon.png" alt="error-icon">
+                <div id="errorBehaviourSubText">
+                    <pre class="json-output">${syntaxHighlight(errorMessage)}</pre>
+                </div>
+            </div>
+        `;
+}
+export const showErrorAndSuccessful = (element, show, successMessages, errorMessages) => { // TODO: need to refacto, (no time)
+    if (show) {
+        let successMessage = 'Policies are updated successfully!';
+
+        if (!successMessages.batchModify) {
+            element.innerHTML = generateHtmlErrorElement(errorMessages.batchModify);
+            return;
+        }
+
+        if (!successMessages.defineNetwork) {
+            element.innerHTML = generateHtmlErrorElement(errorMessages.defineNetwork);
+            return;
+        }
+
+        element.innerHTML = `
+            <div id="successfulBehaviour">
+                <img class="icon-image" src="/assets/images/successful-icon.png" alt="successful-icon">
+                <div id="successfulBehaviourSubText"><p>${successMessage}</p></div>
+            </div>
+        `;
+    } else {
+        let errorBehaviour = document.getElementById('errorBehaviour');
+        let errorBehaviourSubText = document.getElementById('errorBehaviourSubText');
+
+        if (errorBehaviour) {
+            errorBehaviour.style.display = 'none';
+            errorBehaviourSubText.style.display = 'none';
+        }
+    }
+};
+
 export const showNothingToModify = (element, show) => {
     if (show) {
         element.innerHTML = `
