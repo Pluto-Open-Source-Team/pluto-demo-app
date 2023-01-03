@@ -4,7 +4,7 @@ GCLOUD_ADC_PATH="/home/gitpod/.config/gcloud/application_default_credentials.jso
 
 if [ ! -f "$GCLOUD_ADC_PATH" ]; then
     if [ -z "$GCP_ADC_FILE" ]; then
-        cat << EOF
+        cat << "EOF"
 GCP_ADC_FILE not set, doing nothing.
 
 This means that invoking the gcloud command will not have a default service credential configured. 
@@ -20,9 +20,9 @@ To fix this:
   - value: paste-the-output
   - repo: Pluto-Open-Source-Team/Pluto-Policy-Manager
 
-You can safely ignore this message if you don't need to deploy Pluto on GCP.
+You can safely ignore this message if you don't need to deploy Pluto on its GCP AppEngine app.
 EOF
-        exit 1;
+        return
     fi
     echo "$GCP_ADC_FILE" > "$GCLOUD_ADC_PATH"
 fi
