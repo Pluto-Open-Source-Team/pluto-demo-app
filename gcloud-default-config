@@ -1,6 +1,0 @@
-[core]
-project = test-api-318309
-
-[compute]
-zone = europe-west3-b
-region = europe-west3

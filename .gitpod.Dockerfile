@@ -8,11 +8,24 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
     apt-get update -y && \
     apt-get install google-cloud-sdk -y
 
+# Install Playwright dependencies
+RUN apt-get install -y libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libatspi2.0-0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libxkbcommon0
+
 USER gitpod
 
 # Copy gcloud default config
 ARG GCLOUD_CONFIG_DIR=/home/gitpod/.config/gcloud
-COPY --chown=gitpod gcloud-default-config $GCLOUD_CONFIG_DIR/configurations/config_default
+COPY --chown=gitpod .gitpod/gcloud-default-config $GCLOUD_CONFIG_DIR/configurations/config_default
 
-# Set Application Default Credentials (ADC) based on user-provided env var
-RUN echo ". /workspace/Pluto-Policy-Manager/scripts/setup-google-adc.sh" >> ~/.bashrc
+# Set Application Default Credentials (ADC) based on user-provided env var or prompt to set env
+RUN echo ". /workspace/Pluto-Policy-Manager/.gitpod/setup-google-adc.sh" >> ~/.bashrc

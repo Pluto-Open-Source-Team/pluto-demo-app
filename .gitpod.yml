@@ -1,17 +1,30 @@
 tasks:
-  - init: |
-      echo -e $ENV_FILE > .env
+  - name: SvelteKit dev server
+    init: |
       npm install
-    command: npm start
+      npx playwright install
+      npm run check
+      gp sync-done install
+    command: npm run dev
+  - name: Unit tests
+    command: |
+      gp sync-await install
+      npm run test:unit
+  - name: End to end tests
+    command: |
+      gp sync-await install
+      npm run test
 
 image:
   file: .gitpod.Dockerfile
 
+ports:
+  - name: SvelteKit dev server
+    port: 5173
+    onOpen: open-browser
+    visibility: private
+
 vscode:
   extensions:
-    - mikestead.dotenv
-
-ports:
-  - name: webpack dev server
-    port: 8080
-    onOpen: open-browser
+    - svelte.svelte-vscode
+    - ms-playwright.playwright

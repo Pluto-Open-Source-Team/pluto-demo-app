@@ -1,42 +1,38 @@
-# Pluto
+# create-svelte
 
-### [Pluto Application](https://pluto.chromebook.cloud/)
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
-Welcome to the free Pluto Policy Manager - your app to manage Chrome OS policies.
-This tool is being developed and maintained by the Pluto open source team
+## Creating a project
 
-## Installation
-
-Use the package manager [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install all of Pluto's build dependencies. 
+If you're seeing this, you've probably already done this step. Congrats!
 
 ```bash
-npm install
+# create a new project in the current directory
+npm create svelte@latest
+
+# create a new project in my-app
+npm create svelte@latest my-app
 ```
 
-## Customization
+## Developing
 
-Make a copy of `.env.example` into `.env` and customize it to your needs. 
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
-cp .env.example .env
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
-## Build
+## Building
 
-Generate a minified build ready to host on any web server using
+To create a production version of your app:
 
 ```bash
 npm run build
 ```
 
-## Deploy
+You can preview the production build with `npm run preview`.
 
-After building, you can copy the files in `dist/` onto any web server. 
-
-A very easy way to host Pluto is to use [Google App Engine](https://cloud.google.com/appengine). There's a configuration file for App Engine included in this repository, the `app.yaml`. To deploy Pluto to AppEngine, use 
-
-```bash
-gcloud app deploy
-```
-
-Alternatively, you could upload it to any web accessible storage (like [Google Cloud Storage](https://cloud.google.com/storage)) and [point your domain to it](https://cloud.google.com/storage/docs/hosting-static-website). 
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
