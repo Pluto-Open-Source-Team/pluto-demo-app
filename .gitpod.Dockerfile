@@ -9,7 +9,7 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.c
     apt-get install google-cloud-sdk -y
 
 # Install Playwright dependencies
-RUN apt-get install -y libatk1.0-0 \
+RUN apt-get update -y && apt-get install -y libatk1.0-0 \
     libatk-bridge2.0-0 \
     libcups2 \
     libdrm2 \
