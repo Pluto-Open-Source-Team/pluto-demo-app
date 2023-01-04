@@ -6,9 +6,11 @@
 	$pageTitle = 'Pluto Policy Manager';
 	onMount(async () => {
 		if ($isNew) {
+			$isNew = false;
 			goto('/home');
 		}
 		if (!$isNew) {
+			$isNew = false;
 			goto('/app');
 		}
 	});

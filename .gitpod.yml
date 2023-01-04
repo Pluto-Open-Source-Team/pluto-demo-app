@@ -2,7 +2,6 @@ tasks:
   - name: SvelteKit dev server
     init: |
       npm install
-      npx playwright install
       npm run check
       gp sync-done install
       npm run prepare
@@ -14,6 +13,7 @@ tasks:
   - name: End to end tests
     command: |
       gp sync-await install
+      npx playwright install
       npm run test
 
 image:
