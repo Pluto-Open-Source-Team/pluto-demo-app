@@ -7,10 +7,4 @@ isNew.subscribe((value) => {
 	browser && localStorage.setItem('isNew', value === false ? 'false' : 'true');
 });
 
-const storedTheme = ((browser && localStorage.getItem('theme')) || 'light') as 'light' | 'dark';
-export const theme = writable(storedTheme);
-theme.subscribe((value) => {
-	browser && localStorage.setItem('theme', value === 'dark' ? 'dark' : 'light');
-});
-
 export const pageTitle = writable('Pluto Policy Manager');

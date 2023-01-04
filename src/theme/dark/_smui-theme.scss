@@ -3,22 +3,22 @@
 @use '@material/theme/color-palette';
 
 @use '@material/theme/index' as theme with (
-	$primary: rgb(33, 75, 165),
-	$secondary: color.scale(#676778, $whiteness: -10%),
-	$surface: color.adjust(color-palette.$grey-900, $blue: +4),
-	$background: #000,
+	$primary: #234e70,
+	$secondary: #2aa198,
+	$surface: #073642,
+	$background: #002b36,
 	$error: color-palette.$red-700
 );
 
 html,
 body {
-	background-color: #000;
+	background-color: theme.$background;
 	color: theme.$on-surface;
 }
 
 a {
-	color: #40b3ff;
+	color: color.scale(#2aa198, $lightness: +15%);
 }
 a:visited {
-	color: color.scale(#40b3ff, $lightness: -35%);
+	color: color.scale(#2aa198, $lightness: -15%);
 }

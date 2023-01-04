@@ -3,9 +3,9 @@
 @use '@material/theme/color-palette';
 
 @use '@material/theme/index' as theme with (
-	$primary: rgb(33, 75, 165),
-	$secondary: #676778,
-	$surface: #fff,
+	$primary: #a7beae,
+	$secondary: #b85042,
+	$surface: color.scale(#e7e8d1, $whiteness: +20%),
 	$background: #fff,
 	$error: color-palette.$red-900
 );
@@ -17,8 +17,8 @@ body {
 }
 
 a {
-	color: #40b3ff;
+	color: theme.$primary;
 }
 a:visited {
-	color: color.scale(#40b3ff, $lightness: -35%);
+	color: color.scale(theme.$primary, $lightness: -35%);
 }
