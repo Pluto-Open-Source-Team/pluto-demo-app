@@ -90,7 +90,14 @@
 		padding: 24px 0;
 	}
 
-	* :global(.smui-paper) {
-		max-width: 80vw;
+	@media (max-width: 1024px) {
+		* :global(.smui-paper) {
+			max-width: 80%;
+		}
+	}
+	@media (min-width: 1024px) {
+		* :global(.smui-paper) {
+			max-width: 800px;
+		}
 	}
 </style>
