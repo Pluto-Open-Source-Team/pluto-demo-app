@@ -5,6 +5,7 @@ tasks:
       npx playwright install
       npm run check
       gp sync-done install
+      npm run prepare
     command: npm run dev
   - name: Unit tests
     command: |
