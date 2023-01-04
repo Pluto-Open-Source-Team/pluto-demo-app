@@ -1,14 +1,8 @@
 # Pluto Policy Manager
 
-## Demo
-
-Try out our [Pluto Demo Application](https://pluto.chromebook.cloud/)!
-
 ## Try it out
 
-To skip the setup steps for a dev setup, you can also try out Pluto in Gitpod, a one-click online IDE:
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Pluto-Open-Source-Team/Pluto-Policy-Manager)
+Check out our [Pluto Demo Application](https://pluto.chromebook.cloud/)!
 
 ## Features
 
@@ -19,6 +13,12 @@ Compared to Google's own admin console, Pluto aims to make the admin's life easi
 - Diff policy changes before effecting them
 - White label this app for enterprise use
 - QoL features like dark mode and mobile support
+
+## Quickstart for devs
+
+To skip the setup steps for a dev setup, you can also try out Pluto in Gitpod, a one-click online IDE:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Pluto-Open-Source-Team/Pluto-Policy-Manager)
 
 ## Installation
 
