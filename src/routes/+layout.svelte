@@ -1,9 +1,11 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 	import githubLogo from '$lib/assets/github-mark-white.svg';
 	import IconButton from '@smui/icon-button';
 	import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
 	import { pageTitle } from './stores';
+
+	export const prerender = true;
 </script>
 
 <TopAppBar variant="static" prominent={false} dense={false} color={'primary'}>
