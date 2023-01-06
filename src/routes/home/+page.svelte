@@ -1,10 +1,30 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { PUBLIC_CLIENT_ID } from '$env/static/public';
 	import Button, { Label } from '@smui/button';
 	import Paper, { Content, Subtitle, Title } from '@smui/paper';
-	import { pageTitle } from '../stores';
+	import { onMount } from 'svelte';
+	import { pageTitle, user } from '../stores';
 
 	$pageTitle = 'Pluto Policy Manager // Welcome';
+
+	let client: TokenClient;
+	onMount(() => {
+		if ($user.email.length === 0) {
+			google.accounts.id.prompt();
+		}
+		client = window.google.accounts.oauth2.initTokenClient({
+			client_id: PUBLIC_CLIENT_ID,
+			scope: [
+				'https://www.googleapis.com/auth/admin.directory.orgunit.readonly',
+				'https://www.googleapis.com/auth/chrome.management.policy'
+			].join(' '),
+			callback: (tokenResponse) => {
+				$user.accessToken = tokenResponse.access_token;
+				goto('/app');
+			}
+		});
+	});
 </script>
 
 <div class="paper-container">
@@ -24,7 +44,12 @@
 		</Content>
 	</Paper>
 
-	<Button on:click={() => goto('/app')} variant="raised" color="secondary">
+	<Button
+		disabled={$user.email.length === 0}
+		on:click={() => client.requestAccessToken()}
+		variant="raised"
+		color="secondary"
+	>
 		<Label>Get started</Label>
 	</Button>
 

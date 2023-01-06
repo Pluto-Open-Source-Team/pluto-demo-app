@@ -1,17 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { isNew, pageTitle } from './stores';
+	import { pageTitle, user } from './stores';
 
 	$pageTitle = 'Pluto Policy Manager';
+
 	onMount(async () => {
-		if ($isNew) {
-			$isNew = false;
+		if ($user.email.length === 0) {
 			goto('/home');
 		}
-		if (!$isNew) {
-			$isNew = false;
-			goto('/app');
-		}
+		goto('/app');
 	});
 </script>

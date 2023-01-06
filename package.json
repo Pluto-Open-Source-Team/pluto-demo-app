@@ -24,15 +24,21 @@
 		"@smui/form-field": "^7.0.0-beta.0",
 		"@smui/icon-button": "^7.0.0-beta.0",
 		"@smui/layout-grid": "^7.0.0-beta.0",
+		"@smui/list": "^7.0.0-beta.0",
+		"@smui/menu": "^7.0.0-beta.0",
 		"@smui/paper": "^7.0.0-beta.0",
 		"@smui/top-app-bar": "^7.0.0-beta.0",
 		"@sveltejs/adapter-auto": "^1.0.0",
 		"@sveltejs/kit": "^1.0.0",
+		"@types/google-one-tap": "^1.2.2",
+		"@types/google.accounts": "^0.0.5",
+		"@types/gsi": "^0.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"jwt-decode": "^3.1.2",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
 		"smui-theme": "^7.0.0-beta.0",
@@ -54,5 +60,8 @@
 		"url": "https://github.com/Pluto-Open-Source-Team/Pluto-Policy-Manager/issues"
 	},
 	"homepage": "https://github.com/Pluto-Open-Source-Team/Pluto-Policy-Manager#readme",
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"svelte-local-storage-store": "^0.3.2"
+	}
 }

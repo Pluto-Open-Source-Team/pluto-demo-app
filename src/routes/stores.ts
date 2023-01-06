@@ -1,10 +1,20 @@
-import { browser } from '$app/environment';
+import { writable as localStoreWritable } from 'svelte-local-storage-store';
 import { writable } from 'svelte/store';
 
-const storedIsNew = JSON.parse((browser && localStorage.getItem('isNew')) || 'true') as boolean;
-export const isNew = writable(storedIsNew);
-isNew.subscribe((value) => {
-	browser && localStorage.setItem('isNew', value === false ? 'false' : 'true');
-});
-
 export const pageTitle = writable('Pluto Policy Manager');
+
+export const user = localStoreWritable<User>('user', {
+	email: '',
+	familyName: '',
+	givenName: '',
+	name: '',
+	avatarUrl: ''
+});
+export interface User {
+	email: string;
+	familyName: string;
+	givenName: string;
+	name: string;
+	avatarUrl: string;
+	accessToken?: string;
+}
