@@ -1,0 +1,24 @@
+@use 'sass:color';
+
+@use '@material/theme/color-palette';
+
+@use '@material/theme/index' as theme with (
+	$primary: #a7beae,
+	$secondary: #b85042,
+	$surface: color.scale(#e7e8d1, $whiteness: +20%),
+	$background: #fff,
+	$error: color-palette.$red-900
+);
+
+html,
+body {
+	background-color: theme.$surface;
+	color: theme.$on-surface;
+}
+
+a {
+	color: theme.$primary;
+}
+a:visited {
+	color: color.scale(theme.$primary, $lightness: -35%);
+}

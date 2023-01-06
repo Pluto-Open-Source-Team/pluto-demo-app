@@ -1,42 +1,78 @@
-# Pluto
+# Pluto Policy Manager
 
-### [Pluto Application](https://pluto.chromebook.cloud/)
+## Try it out
 
-Welcome to the free Pluto Policy Manager - your app to manage Chrome OS policies.
-This tool is being developed and maintained by the Pluto open source team
+Check out our [Pluto Demo Application](https://pluto.chromebook.cloud/)!
+
+## Features
+
+Compared to Google's own admin console, Pluto aims to make the admin's life easier in the following ways:
+
+- Copy policies between organizational units
+- Backup and version policies
+- Diff policy changes before effecting them
+- White label this app for enterprise use
+- QoL features like dark mode and mobile support
+
+## Quickstart for devs
+
+To skip the setup steps for a dev setup, you can also try out Pluto in Gitpod, a one-click online IDE:
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Pluto-Open-Source-Team/Pluto-Policy-Manager)
 
 ## Installation
 
-Use the package manager [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install all of Pluto's build dependencies. 
+Use the package manager [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install all of Pluto's build dependencies.
 
 ```bash
 npm install
 ```
 
-## Customization
+## Developing
 
-Make a copy of `.env.example` into `.env` and customize it to your needs. 
+To start a development server:
 
 ```bash
-cp .env.example .env
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
-## Build
+There are also tests available. It's very much recommended to run unit tests
 
-Generate a minified build ready to host on any web server using
+```bash
+npm run test:unit
+```
+
+They'll start in watch mode, so you can leave them open while developing and check whether you've broken anything at any time.
+
+Before committing (or opening a pull request), also run our end-to-end tests using `npm run test`.
+
+## Building
+
+To create a production version of your app:
 
 ```bash
 npm run build
 ```
 
-## Deploy
+You can preview the production build with `npm run preview`.
 
-After building, you can copy the files in `dist/` onto any web server. 
+### Environment variables
 
-A very easy way to host Pluto is to use [Google App Engine](https://cloud.google.com/appengine). There's a configuration file for App Engine included in this repository, the `app.yaml`. To deploy Pluto to AppEngine, use 
+We use `.env` files to configure the app at compile time, both when running a dev server as well as when building. Copy the `.env.example` into `.env` to get started.
 
-```bash
-gcloud app deploy
-```
+- **`PUBLIC_CLIENT_ID`** is the Google OAuth2 client id we need to make any API requests. There's a default provided, but every project and id has their own quotas. So if you ever run into quota errors, this may be an easy way to fix the issue: Simply create your own project and client id, as [documented by Google](https://support.google.com/cloud/answer/6158849).
 
-Alternatively, you could upload it to any web accessible storage (like [Google Cloud Storage](https://cloud.google.com/storage)) and [point your domain to it](https://cloud.google.com/storage/docs/hosting-static-website). 
+## Deploying
+
+To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+We deploy to Google's AppEngine, which is why we use [`svelte-adapter-appengine`](https://github.com/HalfdanJ/svelte-adapter-appengine). This allows us to use Cloud Storage and some content caching.
+
+To deploy to AppEngine, run `npm run build`, and then `gcloud app deploy --project <CLOUD_PROJECT_ID> build/app.yaml`.
+
+If you just want a flat static site (ie HTML+CSS+JavaScript), you can instead use [SvelteKit's static site adapter](https://github.com/sveltejs/kit/tree/master/packages/adapter-static).
+
+If you use other services (Cloudflare Pages, Netlify, Vercel), you can find [other adapters in SvelteKit's documentation](https://kit.svelte.dev/docs/adapters).

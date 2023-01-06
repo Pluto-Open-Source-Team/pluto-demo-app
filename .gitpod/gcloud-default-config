@@ -1,0 +1,6 @@
+[core]
+project = pluto-policy-manager-dev
+
+[compute]
+zone = europe-west3-b
+region = europe-west3
