@@ -59,6 +59,12 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
+### Environment variables
+
+We use `.env` files to configure the app at compile time, both when running a dev server as well as when building. Copy the `.env.example` into `.env` to get started.
+
+- **`PUBLIC_CLIENT_ID`** is the Google OAuth2 client id we need to make any API requests. There's a default provided, but every project and id has their own quotas. So if you ever run into quota errors, this may be an easy way to fix the issue: Simply create your own project and client id, as [documented by Google(https://support.google.com/cloud/answer/6158849)].
+
 ## Deploying
 
 To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.

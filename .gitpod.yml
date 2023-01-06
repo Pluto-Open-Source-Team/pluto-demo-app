@@ -1,6 +1,7 @@
 tasks:
   - name: SvelteKit dev server
     init: |
+      cp .env.example .env
       npm install
       npm run check
       gp sync-done install
