@@ -773,7 +773,7 @@ input:checked + .slider:before {
 
 .edit-button {
     width: 16%;
-    margin: 15px auto;
+    margin: 15px auto 65px;
     display: block;
 }
 
@@ -919,4 +919,8 @@ PP - TOS
 
 .mb-6 {
     margin-bottom: 6px;
+}
+
+#previewApplyButtonId .edit-button {
+    margin-bottom: 20px;
 }
