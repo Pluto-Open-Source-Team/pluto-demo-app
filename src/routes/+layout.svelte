@@ -10,8 +10,6 @@
 	import GoogleOneTap from './GoogleOneTap.svelte';
 	import { pageTitle, user } from './stores';
 
-	export const prerender = true;
-
 	let darkMode: boolean;
 	if (browser) {
 		darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;

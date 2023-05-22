@@ -20,7 +20,7 @@
 				'https://www.googleapis.com/auth/chrome.management.policy'
 			].join(' '),
 			callback: (tokenResponse) => {
-				$user.accessToken = tokenResponse.access_token;
+				$user.accessToken = tokenResponse;
 				goto('/app');
 			}
 		});
